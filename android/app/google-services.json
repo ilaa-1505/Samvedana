@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "651634105290",
+    "project_id": "samvedana-95a5e",
+    "storage_bucket": "samvedana-95a5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651634105290:android:4f7cd0fc10247b556ecd33",
+        "android_client_info": {
+          "package_name": "com.example.samveadana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651634105290-tcdn6k7uccisoubh21hrhn82nmvhd4i3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.samveadana",
+            "certificate_hash": "32a5be2e9eafab7512f02fb81748f61f7a1c8d60"
+          }
+        },
+        {
+          "client_id": "651634105290-38mns1ccvk3b2esnkubrefmhbbiinj8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs5Ptv0RlDIQP-9aVxqBuFeJdXdD6oh-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651634105290-38mns1ccvk3b2esnkubrefmhbbiinj8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
