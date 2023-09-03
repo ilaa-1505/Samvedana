@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -15,6 +17,32 @@ class _MyotpState extends State<Myotp> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   var code = "";
   bool isOtpIncorrect = false;
+
+  Future<void> _createOrUpdateUserCollection(String uid) async {
+    try {
+      final userDocRef = FirebaseFirestore.instance.collection('users').doc(uid);
+
+      // Check if the user document already exists in Firestore
+      final userDoc = await userDocRef.get();
+
+      if (userDoc.exists) {
+        // User data already exists, no need to update it
+      } else {
+        // If the document doesn't exist, create it with default values or empty data
+        await userDocRef.set({
+          'name': '', // You can set default or empty values here
+          'phone_num': 0,
+          'email': '',
+        });
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error creating or updating user collection: $e');
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     const defaultPinTheme = PinTheme(
@@ -137,6 +165,7 @@ class _MyotpState extends State<Myotp> {
                     try {
                       // Sign the user in (or link) with the credential
                       await auth.signInWithCredential(credential);
+                      await _createOrUpdateUserCollection(auth.currentUser!.uid);
                       Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
                     } catch (e) {
                       // Handle authentication failure

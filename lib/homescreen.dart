@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: OutlinedButton(
           onPressed: () {
-            // Add your action here when the button is pressed.
+            Navigator.of(context).pushReplacementNamed('profile');
           },
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
