@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(14.0),
                   ),
                   child: Text(_isEditing ? "Save" : "Edit"),
                 ),
