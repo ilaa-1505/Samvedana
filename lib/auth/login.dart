@@ -16,7 +16,7 @@ class _MyphoneState extends State<Myphone> {
     super.initState();
 
     String countryCode = "  +91";
-    String countryCodeWithSpace = ' ' + countryCode;
+    String countryCodeWithSpace = ' $countryCode';
 
     countrycode.text = countryCodeWithSpace;
   }

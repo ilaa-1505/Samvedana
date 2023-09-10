@@ -169,7 +169,9 @@ class _MyotpState extends State<Myotp> {
                       Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
                     } catch (e) {
                       // Handle authentication failure
-                      print('Authentication failed: $e');
+                      if (kDebugMode) {
+                        print('Authentication failed: $e');
+                      }
                       setState(() {
                         isOtpIncorrect = true;
                       });
