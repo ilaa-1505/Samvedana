@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../homescreen.dart';
 import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
 
@@ -13,7 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "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";
+  const apiKey = " ";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -74,7 +75,21 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hi! This is Sakhi"),
-        backgroundColor: Color.fromARGB(255, 244, 103, 202),
+        backgroundColor: const Color.fromARGB(255, 244, 103, 202),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyHomePage(
+                  title: 'Samvedana',
+                ),
+              ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded,
+            color: Colors.black,),
+        ),
         elevation: 0,
         centerTitle: true,
       ),
