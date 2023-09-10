@@ -51,20 +51,20 @@ class _MyotpState extends State<Myotp> {
       textStyle: TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            width: 2,
-            color: Colors.black
-          )
+            bottom: BorderSide(
+                width: 2,
+                color: Colors.black
+            )
         ),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: const Border(
-          bottom: BorderSide(
-              width: 2,
-              color: Colors.black
-          ),),
+        bottom: BorderSide(
+            width: 2,
+            color: Colors.black
+        ),),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
@@ -85,10 +85,10 @@ class _MyotpState extends State<Myotp> {
         elevation: 0,
         leading: IconButton(
           onPressed: (){
-              Navigator.pop(context);
+            Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_rounded,
-          color: Colors.black,),
+            color: Colors.black,),
         ),
       ),
       body: Container(
@@ -176,8 +176,8 @@ class _MyotpState extends State<Myotp> {
                       // You can show an error message here if needed
                     }
                   },
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.pink.shade400,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.pink.shade400,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -191,7 +191,7 @@ class _MyotpState extends State<Myotp> {
               Row(
                   children: [TextButton(onPressed: () {
 
-                      Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
 
                   },
                       child: const Text('Edit Phone Number?' , style: TextStyle(

@@ -15,7 +15,7 @@ class _MyphoneState extends State<Myphone> {
   void initState() {
     super.initState();
 
-    String countryCode = "+91";
+    String countryCode = "   +91";
     String countryCodeWithSpace = ' ' + countryCode;
 
     countrycode.text = countryCodeWithSpace;
@@ -120,7 +120,7 @@ class _MyphoneState extends State<Myphone> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.pink.shade400,
+                    backgroundColor: Colors.pink.shade400,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

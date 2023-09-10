@@ -84,7 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile Page'),
-        backgroundColor: Colors.pinkAccent, // Match with your app's color scheme
+        backgroundColor: Colors.pinkAccent,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded,
+            color: Colors.white,),
+        ),// Match with your app's color scheme
       ),
       body: Container(
         margin: const EdgeInsets.only(left: 10, right: 10),

@@ -25,18 +25,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade500,
-        toolbarHeight: 100, // Adjust the height as needed
-        title: const Center( // Wrap the title in a Center widget
-          child: Text(
-            'Samvedana',
-            style: TextStyle(
-              fontSize: 28, // Adjust the font size as needed
-              fontWeight: FontWeight.bold,
-            ),
+      backgroundColor: Colors.pink.shade500,
+      toolbarHeight: 100,
+      automaticallyImplyLeading: false, // Set this to false to remove the back button
+      title: const Center( // Wrap the title in a Center widget
+        child: Text(
+          'Samvedana',
+          style: TextStyle(
+            fontSize: 28, // Adjust the font size as needed
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
+    ),
+
 
       body: Center(
         child: Column(
