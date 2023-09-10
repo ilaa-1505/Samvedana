@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:samveadana/auth/login.dart';
@@ -31,7 +32,9 @@ class MyApp extends StatelessWidget {
 
     // Check if the user is logged in based on UserProvider's isLoggedIn property
     String initialRoute = userProvider.isLoggedIn ? 'home' : 'login';
-    print('Initial route: $initialRoute'); // Add this line for debugging
+    if (kDebugMode) {
+      print('Initial route: $initialRoute');
+    } // Add this line for debugging
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

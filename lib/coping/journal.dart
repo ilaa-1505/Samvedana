@@ -19,6 +19,7 @@ class _JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: AppStyle.mainColor,
         appBar: AppBar(
@@ -30,12 +31,12 @@ class _JournalPageState extends State<JournalPage> {
           centerTitle: true,
           backgroundColor: AppStyle.mainColor,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyHomePage(
+                    builder: (context) => const MyHomePage(
                       title: 'Samvedana',
                     ),
                   ));
@@ -68,7 +69,7 @@ class _JournalPageState extends State<JournalPage> {
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(
                             color: Colors.white,
                           ),
@@ -77,7 +78,7 @@ class _JournalPageState extends State<JournalPage> {
                       if (snapshot.hasData) {
                         return GridView(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
                           children: snapshot.data!.docs
                               .map((note) => noteCard(() {
@@ -104,11 +105,11 @@ class _JournalPageState extends State<JournalPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NoteEditorScreen()),
+              MaterialPageRoute(builder: (context) => const NoteEditorScreen()),
             );
           },
-          label: Text("Add note"),
-          icon: Icon(Icons.add),
+          label: const Text("Add note"),
+          icon: const Icon(Icons.add),
         ),
       ),
     );

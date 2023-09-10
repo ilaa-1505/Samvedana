@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:samveadana/coping/app_style.dart';
 
@@ -14,17 +15,17 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   int color_id = Random().nextInt(AppStyle.cardsColor.length);
   String date = DateTime.now().toString();
 
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _mainController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _mainController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppStyle.cardsColor[color_id],
       appBar: AppBar(
         backgroundColor: AppStyle.cardsColor[color_id],
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0.0,
-        title: Text(
+        title: const Text(
           "Add a new note",
           style: TextStyle(color: Colors.black),
         ),
@@ -34,25 +35,25 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TextField(
             controller: _titleController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: InputBorder.none, hintText: 'Note Title'),
             style: AppStyle.mainTitle,
           ),
-          SizedBox(
+          const SizedBox(
             height: 8.0,
           ),
           Text(
             date,
             style: AppStyle.dateTitle,
           ),
-          SizedBox(
+          const SizedBox(
             height: 28.0,
           ),
           TextField(
             controller: _mainController,
             keyboardType: TextInputType.multiline,
             maxLines: null,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: InputBorder.none, hintText: 'Note Content'),
             style: AppStyle.mainContent,
           ),
@@ -67,11 +68,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             "note_content": _mainController.text,
             "color_id": color_id,
           }).then((value) {
-            print(value.id);
+            if (kDebugMode) {
+              print(value.id);
+            }
             Navigator.pop(context);
           }).catchError((error) => print("Failed to add note due to $error"));
         },
-        child: Icon(
+        child: const Icon(
           Icons.save,
         ),
       ),
