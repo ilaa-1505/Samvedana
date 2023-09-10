@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class QuizScreen extends StatefulWidget {
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -19,7 +18,10 @@ class _QuizScreenState extends State<QuizScreen> {
   final List<Map<String, dynamic>> fixedOptions = [
     {'text': 'Did not apply to me at all', 'value': 1},
     {'text': 'Applied to me to some degree, or some of the time', 'value': 2},
-    {'text': 'Applied to me to a considerable degree, or a good part of the time', 'value': 3},
+    {
+      'text': 'Applied to me to a considerable degree, or a good part of the time',
+      'value': 3
+    },
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
   ];
 
@@ -48,7 +50,7 @@ class _QuizScreenState extends State<QuizScreen> {
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
       if (data != null) {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 42; i++) {
           final question = data[i.toString()] as String?;
           if (question != null) {
             quizData.add(question);
@@ -64,9 +66,11 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void setUserSelection(int selectedValue) {
     setState(() {
-      if (quizQuestions.isNotEmpty && currentQuestionIndex < quizQuestions.length) {
+      if (quizQuestions.isNotEmpty &&
+          currentQuestionIndex < quizQuestions.length) {
         userSelections[currentQuestionIndex] = selectedValue;
-        isNextButtonEnabled = true; // Enable next button when an option is selected
+        isNextButtonEnabled =
+        true; // Enable next button when an option is selected
       }
     });
   }
@@ -75,11 +79,9 @@ class _QuizScreenState extends State<QuizScreen> {
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setState(() {
         currentQuestionIndex++;
-        if(userSelections[currentQuestionIndex] != -1)
-          {
-            isNextButtonEnabled = true;
-          }
-        else {
+        if (userSelections[currentQuestionIndex] != -1) {
+          isNextButtonEnabled = true;
+        } else {
           isNextButtonEnabled = false;
         }
       });
@@ -100,6 +102,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int totalQuestions = quizQuestions.length; // Count the number of questions
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Quiz App'),
@@ -110,29 +114,41 @@ class _QuizScreenState extends State<QuizScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Question ${currentQuestionIndex + 1}:',
+              'Question ${currentQuestionIndex + 1} of $totalQuestions:',
+              // Display the question count
               style: TextStyle(fontSize: 18.0),
             ),
             SizedBox(height: 8.0),
-            Text(
-              quizQuestions.isNotEmpty && currentQuestionIndex < quizQuestions.length
-                  ? quizQuestions[currentQuestionIndex]
-                  : 'Loading...',
-              style: TextStyle(fontSize: 24.0),
-            ),
+            if (quizQuestions.isNotEmpty &&
+                currentQuestionIndex >= 0 &&
+                currentQuestionIndex < quizQuestions.length)
+              Text(
+                quizQuestions[currentQuestionIndex],
+                style: TextStyle(fontSize: 24.0),
+              )
+            else
+              Text(
+                'Loading...',
+                style: TextStyle(fontSize: 24.0),
+              ),
             SizedBox(height: 16.0),
-            Column(
-              children: fixedOptions.map<Widget>((option) {
-                return RadioListTile<int>(
-                  title: Text(option['text']),
-                  value: option['value'],
-                  groupValue: userSelections[currentQuestionIndex],
-                  onChanged: (int? selectedValue) {
-                    setUserSelection(selectedValue!);
-                  },
-                );
-              }).toList(),
-            ),
+            if (quizQuestions.isNotEmpty &&
+                currentQuestionIndex >= 0 &&
+                currentQuestionIndex < quizQuestions.length)
+              Column(
+                children: fixedOptions.map<Widget>((option) {
+                  return RadioListTile<int>(
+                    title: Text(option['text']),
+                    value: option['value'],
+                    groupValue: userSelections[currentQuestionIndex],
+                    onChanged: (int? selectedValue) {
+                      setUserSelection(selectedValue!);
+                    },
+                  );
+                }).toList(),
+              )
+            else
+              Text('Options loading...'), // Handle loading of options
           ],
         ),
       ),
@@ -148,17 +164,24 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (currentQuestionIndex == quizQuestions.length - 1) {
-                // If it's the 42nd question, change behavior or perform an action (e.g., end quiz)
-                // Replace this with the desired action when the quiz is ending
-                print('$userSelections');
-              } else {
-                // For other questions, proceed to the next question
-                nextQuestion();
+              if (quizQuestions.isNotEmpty &&
+                  currentQuestionIndex >= 0 &&
+                  currentQuestionIndex < quizQuestions.length) {
+                if (currentQuestionIndex == quizQuestions.length - 1) {
+                  print('$userSelections');
+                } else {
+                  nextQuestion();
+                }
               }
             },
             child: Text(
-              currentQuestionIndex == quizQuestions.length - 1 ? 'End Quiz' : 'Next Question',
+              quizQuestions.isNotEmpty &&
+                  currentQuestionIndex >= 0 &&
+                  currentQuestionIndex < quizQuestions.length
+                  ? (currentQuestionIndex == quizQuestions.length - 1
+                  ? 'End Quiz'
+                  : 'Next Question')
+                  : 'Loading...',
               style: TextStyle(fontSize: 18.0),
             ),
           ),

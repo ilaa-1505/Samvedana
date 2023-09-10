@@ -32,7 +32,7 @@ class _JournalPageState extends State<JournalPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+
             },
           ),
         ),
