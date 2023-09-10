@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samveadana/coping/app_style.dart';
 import 'package:samveadana/coping/note_card.dart';
+import 'package:samveadana/coping/note_editor.dart';
+import 'package:samveadana/coping/note_reader.dart';
+import 'package:samveadana/homescreen.dart';
 
 class JournalPage extends StatefulWidget {
   const JournalPage({super.key});
@@ -32,7 +35,13 @@ class _JournalPageState extends State<JournalPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(
+                      title: 'Samvedana',
+                    ),
+                  ));
             },
           ),
         ),
@@ -74,7 +83,14 @@ class _JournalPageState extends State<JournalPage> {
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
                           children: snapshot.data!.docs
-                              .map((note) => noteCard(() {}, note))
+                              .map((note) => noteCard(() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              NoteReaderScreen(note),
+                                        ));
+                                  }, note))
                               .toList(),
                         );
                       }
@@ -88,7 +104,12 @@ class _JournalPageState extends State<JournalPage> {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NoteEditorScreen()),
+            );
+          },
           label: Text("Add note"),
           icon: Icon(Icons.add),
         ),
