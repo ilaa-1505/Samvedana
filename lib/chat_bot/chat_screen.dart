@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../homescreen.dart';
 import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
 
@@ -25,20 +24,21 @@ Future<String> generateResponse(String prompt) async {
         "Content-Type": "application/json",
         "Authorization": "Bearer $apiKey"
       },
-      body: json.encode({
-        "model": "text-davinci-003",
-        "prompt": prompt,
-        "temperature": 0.4,
-        "max_tokens": 4000,
-        "top_p": 1,
-        "frequency_penalty": 0.0,
-        "presence_penalty": 0.0,
-      }),
+      body: json.encode(
+        {
+          "model": "text-davinci-003",
+          "prompt":
+              "I am most probably in depression, please act like a chatbot who helps people with depression, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
+          "temperature": 0.6,
+          "max_tokens": 300,
+        },
+      ),
     );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
-      if (newResponse.containsKey('choices') && newResponse['choices'].isNotEmpty) {
+      if (newResponse.containsKey('choices') &&
+          newResponse['choices'].isNotEmpty) {
         return newResponse['choices'][0]['text'];
       }
     }
@@ -74,24 +74,11 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hi! This is Sakhi"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                  title: 'Samvedana',
-                ),
-              ),
-            );
-          },
-        ),
-        backgroundColor: const Color.fromRGBO(218, 138, 208, 1.0),
+        backgroundColor: Color.fromARGB(255, 244, 103, 202),
         elevation: 0,
         centerTitle: true,
       ),
-      backgroundColor: const Color(0xFF000000),
+      backgroundColor: Color.fromARGB(255, 244, 103, 202),
       body: SafeArea(
         child: Column(
           children: [
@@ -113,7 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: const Padding(
                 padding: EdgeInsets.all(8),
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
             ),
@@ -127,9 +114,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       style: const TextStyle(color: Colors.white),
                       controller: _textController,
                       decoration: const InputDecoration(
-                        fillColor: Color(0xFFCEE315),
+                        fillColor: Color(0xFFEAB6DB),
                         filled: true,
-                        border:InputBorder.none,
+                        border: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         errorBorder: InputBorder.none,
@@ -140,10 +127,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      color: const Color(0xFF49E101),
+                      color: const Color(0xFFE777AA),
                       child: IconButton(
-                        icon: const Icon(Icons.send_rounded,
-                          color: Color.fromRGBO(246, 234, 163, 1.0),
+                        icon: const Icon(
+                          Icons.send_rounded,
+                          color: Color.fromRGBO(250, 249, 247, 1.0),
                         ),
                         onPressed: () async {
                           setState(() {
@@ -155,8 +143,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           });
                           var input = _textController.text;
                           _textController.clear();
-                          Future.delayed(const Duration(milliseconds: 1000)).then((_) =>
-                              _scrollDown());
+                          Future.delayed(const Duration(milliseconds: 1000))
+                              .then((_) => _scrollDown());
                           generateResponse(input).then((value) {
                             setState(() {
                               isLoading = false;
@@ -167,10 +155,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               );
                             });
+                            _scrollDown();
                           });
-                          _textController.clear();
-                          Future.delayed(const Duration(milliseconds: 1000)).then((_) =>
-                              _scrollDown());
                         },
                       ),
                     ),
