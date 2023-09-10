@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../homescreen.dart';
 import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
 
@@ -13,7 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "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";
+  const apiKey = "";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -27,7 +28,7 @@ Future<String> generateResponse(String prompt) async {
       body: json.encode({
         "model": "text-davinci-003",
         "prompt": prompt,
-        "temperature": 1,
+        "temperature": 0.4,
         "max_tokens": 4000,
         "top_p": 1,
         "frequency_penalty": 0.0,
@@ -73,11 +74,24 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hi! This is Sakhi"),
-        backgroundColor: const Color.fromRGBO(245, 46, 212, 1.0),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyHomePage(
+                  title: 'Samvedana',
+                ),
+              ),
+            );
+          },
+        ),
+        backgroundColor: const Color.fromRGBO(218, 138, 208, 1.0),
         elevation: 0,
         centerTitle: true,
       ),
-      backgroundColor: const Color(0xFFEAEAB9),
+      backgroundColor: const Color(0xFF000000),
       body: SafeArea(
         child: Column(
           children: [
@@ -113,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       style: const TextStyle(color: Colors.white),
                       controller: _textController,
                       decoration: const InputDecoration(
-                        fillColor: Color(0xFFEAB6DB),
+                        fillColor: Color(0xFFCEE315),
                         filled: true,
                         border:InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -126,7 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      color: const Color(0xFFE777AA),
+                      color: const Color(0xFF49E101),
                       child: IconButton(
                         icon: const Icon(Icons.send_rounded,
                           color: Color.fromRGBO(246, 234, 163, 1.0),

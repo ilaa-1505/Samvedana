@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         'home': (context) => const MyHomePage(title: ''),
         'profile': (context) => const ProfilePage(),
         'journal' : (context) => const JournalPage(),
-        'quiz' : (context) => QuizScreen(),
+        'quiz' : (context) => const QuizScreen(),
         'sakhi' : (context) => const ChatScreen(),
       },
     );
