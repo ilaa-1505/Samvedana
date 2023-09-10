@@ -13,33 +13,60 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isHovered = false;
   double buttonSize = 40.0;
 
-  List<ButtonInfo> buttonsInfo = [
-    ButtonInfo(Colors.pink.shade100, 'Profile'),
-    ButtonInfo(Colors.pink.shade200, 'Personality Test'),
-    ButtonInfo(Colors.pink.shade300, 'Assessment Test'),
-    ButtonInfo(Colors.pink.shade400, 'Coping Mechanisms'),
-  ];
+  void _navigateToNamedRoute(BuildContext context, String routeName) {
+    Navigator.of(context).pushReplacementNamed(routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<ButtonInfo> buttonsInfo = [
+      ButtonInfo(
+        Colors.pink.shade100,
+        'Profile',
+            () {
+          _navigateToNamedRoute(context, 'profile');
+        },
+      ),
+      ButtonInfo(
+        Colors.pink.shade200,
+        'Personality Test',
+            () {
+          // Add the onPressed logic for the Personality Test button here
+        },
+      ),
+      ButtonInfo(
+        Colors.pink.shade300,
+        'Assessment Test',
+            () {
+              _navigateToNamedRoute(context, 'quiz');
+          // Add the onPressed logic for the Assessment Test button here
+        },
+      ),
+      ButtonInfo(
+        Colors.pink.shade400,
+        'Coping Mechanisms',
+            () {
+              _navigateToNamedRoute(context, 'journal');
+        },
+      ),
+    ];
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-      backgroundColor: Colors.pink.shade500,
-      toolbarHeight: 100,
-      automaticallyImplyLeading: false, // Set this to false to remove the back button
-      title: const Center( // Wrap the title in a Center widget
-        child: Text(
-          'Samvedana',
-          style: TextStyle(
-            fontSize: 28, // Adjust the font size as needed
-            fontWeight: FontWeight.bold,
+        backgroundColor: Colors.pink.shade500,
+        toolbarHeight: 100,
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text(
+            'Samvedana',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-    ),
-
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,20 +96,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: Transform.scale(
-        scale: buttonSize / 40.0, // Scale factor based on buttonSize
+        scale: buttonSize / 40.0,
         child: SizedBox(
-          width: 180, // Adjust the width as needed
+          width: 180,
           child: FloatingActionButton(
             onPressed: () {
-              // Add your action here when the button is pressed.
+              _navigateToNamedRoute(context, 'journal');
             },
             tooltip: 'Say Hi',
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             heroTag: null,
             elevation: isHovered ? 8.0 : 6.0,
-            backgroundColor: Colors.pinkAccent,// Change this color to your desired color
+            backgroundColor: Colors.pinkAccent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0), // Adjust the border radius as needed
+              borderRadius: BorderRadius.circular(10.0),
             ),
             child: const Padding(
               padding: EdgeInsets.all(8.0),
@@ -105,12 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
         height: 160,
         decoration: BoxDecoration(
           color: info.color,
-          borderRadius: BorderRadius.circular(5), // Set 0 to remove rounded corners
+          borderRadius: BorderRadius.circular(5),
         ),
         child: OutlinedButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed('profile');
-          },
+          onPressed: info.onPressed,
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
             backgroundColor: Colors.transparent,
@@ -132,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class ButtonInfo {
   final Color color;
   final String text;
+  final VoidCallback onPressed;
 
-  ButtonInfo(this.color, this.text);
+  ButtonInfo(this.color, this.text, this.onPressed);
 }
