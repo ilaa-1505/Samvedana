@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'coping/journal.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -27,7 +28,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.pink.shade500,
         toolbarHeight: 100, // Adjust the height as needed
-        title: const Center( // Wrap the title in a Center widget
+        title: const Center(
+          // Wrap the title in a Center widget
           child: Text(
             'Samvedana',
             style: TextStyle(
@@ -37,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,15 +73,17 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 180, // Adjust the width as needed
           child: FloatingActionButton(
             onPressed: () {
-              // Add your action here when the button is pressed.
+              _navigateToJournalPage(context);
             },
             tooltip: 'Say Hi',
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             heroTag: null,
             elevation: isHovered ? 8.0 : 6.0,
-            backgroundColor: Colors.pinkAccent,// Change this color to your desired color
+            backgroundColor:
+                Colors.pinkAccent, // Change this color to your desired color
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0), // Adjust the border radius as needed
+              borderRadius: BorderRadius.circular(
+                  10.0), // Adjust the border radius as needed
             ),
             child: const Padding(
               padding: EdgeInsets.all(8.0),
@@ -103,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
         height: 160,
         decoration: BoxDecoration(
           color: info.color,
-          borderRadius: BorderRadius.circular(5), // Set 0 to remove rounded corners
+          borderRadius:
+              BorderRadius.circular(5), // Set 0 to remove rounded corners
         ),
         child: OutlinedButton(
           onPressed: () {
@@ -132,4 +136,14 @@ class ButtonInfo {
   final String text;
 
   ButtonInfo(this.color, this.text);
+}
+
+void _navigateToJournalPage(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          JournalPage(), // Replace with your JournalPage widget
+    ),
+  );
 }
