@@ -93,7 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         centerTitle: true,
       ),
-      backgroundColor: Color.fromARGB(255, 244, 103, 202),
+      backgroundColor: const Color.fromARGB(255, 244, 103, 202),
       body: SafeArea(
         child: Column(
           children: [

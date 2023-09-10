@@ -19,34 +19,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<ButtonInfo> buttonsInfo = [
+    List<ButtonInfo> buttonsInfo1 = [
       ButtonInfo(
-        Colors.pink.shade100,
-        'Profile',
-            () {
+        height: 10,
+        color: Colors.pink.shade100,
+        text: 'Profile',
+        onPressed: () {
           _navigateToNamedRoute(context, 'profile');
         },
       ),
       ButtonInfo(
-        Colors.pink.shade200,
-        'Personality Test',
-            () {
+        height: 20,
+        color: Colors.pink.shade200,
+        text: 'Personality Test',
+        onPressed: () {
           // Add the onPressed logic for the Personality Test button here
         },
       ),
-      ButtonInfo(
-        Colors.pink.shade300,
-        'Assessment Test',
-            () {
-              _navigateToNamedRoute(context, 'quiz');
+    ];
+
+    List<ButtonInfo> buttonsInfo2 = [
+    ButtonInfo(
+        height: 10,
+        color: Colors.pink.shade300,
+        text: 'Assessment Test',
+        onPressed: () {
+          _navigateToNamedRoute(context, 'quiz');
           // Add the onPressed logic for the Assessment Test button here
         },
       ),
       ButtonInfo(
-        Colors.pink.shade400,
-        'Coping Mechanisms',
-            () {
-              _navigateToNamedRoute(context, 'journal');
+        height: 10,
+        color: Colors.pink.shade400,
+        text: 'Coping Mechanisms',
+        onPressed: () {
+          _navigateToNamedRoute(context, 'journal');
         },
       ),
     ];
@@ -72,25 +79,30 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    buildLargeButton(buttonsInfo[0]),
-                    const SizedBox(height: 20),
-                    buildLargeButton(buttonsInfo[2]),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  children: <Widget>[
-                    buildLargeButton(buttonsInfo[1]),
-                    const SizedBox(height: 20),
-                    buildLargeButton(buttonsInfo[3]),
-                  ],
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: buttonsInfo1
+                    .map((info) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: buildLargeButton(info),
+                ))
+                    .toList(),
+              ),
+            ),
+            const SizedBox(
+              height : 60
+            ),// Add some space between scroll views
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: buttonsInfo2
+                    .map((info) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: buildLargeButton(info),
+                ))
+                    .toList(),
+              ),
             ),
           ],
         ),
@@ -159,5 +171,11 @@ class ButtonInfo {
   final String text;
   final VoidCallback onPressed;
 
-  ButtonInfo(this.color, this.text, this.onPressed);
+  ButtonInfo({
+    required this.color,
+    required this.text,
+    required this.onPressed,
+    required int height,
+  });
 }
+
