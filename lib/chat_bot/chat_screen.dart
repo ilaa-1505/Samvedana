@@ -28,7 +28,7 @@ Future<String> generateResponse(String prompt) async {
         {
           "model": "text-davinci-003",
           "prompt":
-              "I am most probably in depression, please act like a chatbot who helps people with depression, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else:$prompt",
+              "I am most probably in depression, please act like a chatbot who helps people with depression, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
           "temperature": 0.6,
           "max_tokens": 300,
         },
@@ -74,11 +74,11 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hi! This is Sakhi"),
-        backgroundColor: const Color.fromRGBO(255, 77, 201, 1.0),
+        backgroundColor: Color.fromARGB(255, 244, 103, 202),
         elevation: 0,
         centerTitle: true,
       ),
-      backgroundColor: const Color(0xFFFCFCFC),
+      backgroundColor: Color.fromARGB(255, 244, 103, 202),
       body: SafeArea(
         child: Column(
           children: [
@@ -100,7 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: const Padding(
                 padding: EdgeInsets.all(8),
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
             ),
@@ -129,14 +129,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Container(
                       color: const Color(0xFFE777AA),
                       child: IconButton(
-<<<<<<< HEAD
                         icon: const Icon(
                           Icons.send_rounded,
-                          color: Color.fromRGBO(246, 234, 163, 1.0),
-=======
-                        icon: const Icon(Icons.send_rounded,
                           color: Color.fromRGBO(250, 249, 247, 1.0),
->>>>>>> 1e64d5ad8ea4a42e18b06efd457e7247c440029c
                         ),
                         onPressed: () async {
                           setState(() {
@@ -160,10 +155,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               );
                             });
+                            _scrollDown();
                           });
-                          _textController.clear();
-                          Future.delayed(const Duration(milliseconds: 1000))
-                              .then((_) => _scrollDown());
                         },
                       ),
                     ),
