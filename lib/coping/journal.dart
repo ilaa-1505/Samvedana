@@ -29,6 +29,12 @@ class _JournalPageState extends State<JournalPage> {
           ),
           centerTitle: true,
           backgroundColor: AppStyle.mainColor,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
