@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../homescreen.dart';
 
 class QuizScreen extends StatefulWidget {
+  const QuizScreen({super.key});
+
   @override
   _QuizScreenState createState() => _QuizScreenState();
 }
@@ -60,7 +63,9 @@ class _QuizScreenState extends State<QuizScreen> {
         }
       }
     } catch (e) {
-      print('Error fetching quiz data: $e');
+      if (kDebugMode) {
+        print('Error fetching quiz data: $e');
+      }
     }
 
     return quizData;
@@ -88,7 +93,9 @@ class _QuizScreenState extends State<QuizScreen> {
     } else if (currentQuestionIndex == quizQuestions.length - 1) {
       // Check if all questions have been answered before proceeding
       if (userSelections.every((selection) => selection != -1)) {
-        print('$userSelections');
+        if (kDebugMode) {
+          print('$userSelections');
+        }
       } else {
         // Display an error message or handle the case where not all questions have been answered
       }
@@ -112,14 +119,14 @@ class _QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
-        title: Text('Assessment Quiz'),
+        title: const Text('Assessment Quiz'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MyHomePage(
+                builder: (context) => const MyHomePage(
                   title: 'Samvedana',
                 ),
               ),
@@ -132,20 +139,20 @@ class _QuizScreenState extends State<QuizScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             if (quizQuestions.isNotEmpty &&
                 currentQuestionIndex >= 0 &&
                 currentQuestionIndex < quizQuestions.length)
               Text(
                 quizQuestions[currentQuestionIndex],
-                style: TextStyle(fontSize: 24.0),
+                style: const TextStyle(fontSize: 24.0),
               )
             else
-              Text(
+              const Text(
                 'Loading...',
                 style: TextStyle(fontSize: 24.0),
               ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             if (quizQuestions.isNotEmpty &&
                 currentQuestionIndex >= 0 &&
                 currentQuestionIndex < quizQuestions.length)
@@ -163,7 +170,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 }).toList(),
               )
             else
-              Text('Options loading...'), // Handle loading of options
+              const Text('Options loading...'), // Handle loading of options
           ],
         ),
       ),
@@ -171,20 +178,20 @@ class _QuizScreenState extends State<QuizScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 8.0),
+            margin: const EdgeInsets.only(bottom: 8.0),
             child: ElevatedButton(
               onPressed: previousQuestion,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pinkAccent,
               ),
-              child: Text(
+              child: const Text(
                 'Previous Question',
                 style: TextStyle(fontSize: 18.0),
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 8.0),
+            margin: const EdgeInsets.only(bottom: 8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pinkAccent,
@@ -194,7 +201,9 @@ class _QuizScreenState extends State<QuizScreen> {
                     currentQuestionIndex >= 0 &&
                     currentQuestionIndex < quizQuestions.length) {
                   if (currentQuestionIndex == quizQuestions.length - 1) {
-                    print('$userSelections');
+                    if (kDebugMode) {
+                      print('$userSelections');
+                    }
                   } else {
                     nextQuestion();
                   }
@@ -208,7 +217,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ? 'End Quiz'
                     : 'Next Question')
                     : 'Loading...',
-                style: TextStyle(fontSize: 18.0),
+                style: const TextStyle(fontSize: 18.0),
               ),
             ),
           ),
