@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../homescreen.dart';
+
 class QuizScreen extends StatefulWidget {
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -35,7 +37,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final data = await fetchQuizData();
     setState(() {
       quizQuestions = data;
-      userSelections = List<int>.filled(quizQuestions.length, -1);
+      userSelections = List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
       isNextButtonEnabled = false; // Initialize as disabled
     });
   }
@@ -70,25 +72,30 @@ class _QuizScreenState extends State<QuizScreen> {
           currentQuestionIndex < quizQuestions.length) {
         userSelections[currentQuestionIndex] = selectedValue;
         isNextButtonEnabled =
-        true; // Enable next button when an option is selected
+        false; // Enable next button when an option is selected
       }
     });
   }
 
   void nextQuestion() {
     if (currentQuestionIndex < quizQuestions.length - 1) {
-      setState(() {
-        currentQuestionIndex++;
-        if (userSelections[currentQuestionIndex] != -1) {
-          isNextButtonEnabled = true;
-        } else {
-          isNextButtonEnabled = false;
-        }
-      });
-    } else {
-      print('$userSelections');
+      if (userSelections[currentQuestionIndex] != -1) {
+        setState(() {
+          currentQuestionIndex++;
+          isNextButtonEnabled = userSelections[currentQuestionIndex] != -1;
+        });
+      }
+    } else if (currentQuestionIndex == quizQuestions.length - 1) {
+      // Check if all questions have been answered before proceeding
+      if (userSelections.every((selection) => selection != -1)) {
+        print('$userSelections');
+      } else {
+        // Display an error message or handle the case where not all questions have been answered
+      }
     }
   }
+
+
 
   void previousQuestion() {
     if (currentQuestionIndex > 0) {
@@ -102,22 +109,29 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int totalQuestions = quizQuestions.length; // Count the number of questions
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quiz App'),
+        backgroundColor: Colors.pink,
+        title: Text('Assessment Quiz'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                  title: 'Samvedana',
+                ),
+              ),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Question ${currentQuestionIndex + 1} of $totalQuestions:',
-              // Display the question count
-              style: TextStyle(fontSize: 18.0),
-            ),
             SizedBox(height: 8.0),
             if (quizQuestions.isNotEmpty &&
                 currentQuestionIndex >= 0 &&
@@ -141,6 +155,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     title: Text(option['text']),
                     value: option['value'],
                     groupValue: userSelections[currentQuestionIndex],
+                    activeColor: Colors.pink,
                     onChanged: (int? selectedValue) {
                       setUserSelection(selectedValue!);
                     },
@@ -155,34 +170,46 @@ class _QuizScreenState extends State<QuizScreen> {
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          ElevatedButton(
-            onPressed: previousQuestion,
-            child: Text(
-              'Previous Question',
-              style: TextStyle(fontSize: 18.0),
+          Container(
+            margin: EdgeInsets.only(bottom: 8.0),
+            child: ElevatedButton(
+              onPressed: previousQuestion,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.pinkAccent,
+              ),
+              child: Text(
+                'Previous Question',
+                style: TextStyle(fontSize: 18.0),
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              if (quizQuestions.isNotEmpty &&
-                  currentQuestionIndex >= 0 &&
-                  currentQuestionIndex < quizQuestions.length) {
-                if (currentQuestionIndex == quizQuestions.length - 1) {
-                  print('$userSelections');
-                } else {
-                  nextQuestion();
+          Container(
+            margin: EdgeInsets.only(bottom: 8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.pinkAccent,
+              ),
+              onPressed: () {
+                if (quizQuestions.isNotEmpty &&
+                    currentQuestionIndex >= 0 &&
+                    currentQuestionIndex < quizQuestions.length) {
+                  if (currentQuestionIndex == quizQuestions.length - 1) {
+                    print('$userSelections');
+                  } else {
+                    nextQuestion();
+                  }
                 }
-              }
-            },
-            child: Text(
-              quizQuestions.isNotEmpty &&
-                  currentQuestionIndex >= 0 &&
-                  currentQuestionIndex < quizQuestions.length
-                  ? (currentQuestionIndex == quizQuestions.length - 1
-                  ? 'End Quiz'
-                  : 'Next Question')
-                  : 'Loading...',
-              style: TextStyle(fontSize: 18.0),
+              },
+              child: Text(
+                quizQuestions.isNotEmpty &&
+                    currentQuestionIndex >= 0 &&
+                    currentQuestionIndex < quizQuestions.length
+                    ? (currentQuestionIndex == quizQuestions.length - 1
+                    ? 'End Quiz'
+                    : 'Next Question')
+                    : 'Loading...',
+                style: TextStyle(fontSize: 18.0),
+              ),
             ),
           ),
         ],

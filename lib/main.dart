@@ -7,7 +7,8 @@ import 'homescreen.dart';
 import 'profile.dart';
 import 'coping/journal.dart';
 import 'quiz/depression_test.dart';
-import 'package:samveadana/auth/user_provider.dart'; // Import the UserProvider class
+import 'package:samveadana/auth/user_provider.dart';
+import 'chat_bot/chat_screen.dart';// Import the UserProvider class
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         'profile': (context) => const ProfilePage(),
         'journal' : (context) => const JournalPage(),
         'quiz' : (context) => QuizScreen(),
+        'sakhi' : (context) => const ChatScreen(),
       },
     );
   }

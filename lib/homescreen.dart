@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 180,
           child: FloatingActionButton(
             onPressed: () {
-              _navigateToNamedRoute(context, 'journal');
+              _navigateToNamedRoute(context, 'sakhi');
             },
             tooltip: 'Say Hi',
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
