@@ -14,7 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "";
+  const apiKey = "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";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text(
           "Hi! This is Sakhi",
           style: GoogleFonts.poppins(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.bold)),

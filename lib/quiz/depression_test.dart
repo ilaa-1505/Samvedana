@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:http/http.dart' as http;
 import '../homescreen.dart';
+
+const String apiUrl =
+'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -30,6 +35,44 @@ class _QuizScreenState extends State<QuizScreen> {
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
   ];
 
+  void endQuizAndSendData() async {
+    if (userSelections.every((selection) => selection != -1)) {
+      try {
+        // Convert the userSelections list to a comma-separated string
+        final userSelectionsString = "$userSelections";
+        print(userSelectionsString);
+
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'files': userSelectionsString}));
+
+          // Use userSelectionsString
+
+        if (response.statusCode == 200) {
+          // Successfully sent data to the API
+          if (kDebugMode) {
+            print('Data sent to API: ${response.body}');
+          }
+        } else {
+          // Handle error when API request fails
+          if (kDebugMode) {
+            print('API request failed with status code ${response.statusCode}');
+          }
+        }
+      } catch (e) {
+        // Handle exceptions during the HTTP request
+        if (kDebugMode) {
+          print('Error sending data to API: $e');
+        }
+      }
+    } else {
+      // Display an error message or handle the case where not all questions have been answered
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -55,11 +98,9 @@ class _QuizScreenState extends State<QuizScreen> {
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
       if (data != null) {
-        for (int i = 1; i <= 42; i++) {
+        for (int i = 1; i <= 60; i++) {
           final question = data[i.toString()] as String?;
-          if (question != null) {
-            quizData.add(question);
-          }
+            quizData.add(question!);
         }
       }
     } catch (e) {
@@ -118,7 +159,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: const Color.fromARGB(255, 101, 173, 227),
         title: const Text('Assessment Quiz'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -135,7 +176,7 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top:60,right:16,bottom:16,left:16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -162,7 +203,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     title: Text(option['text']),
                     value: option['value'],
                     groupValue: userSelections[currentQuestionIndex],
-                    activeColor: Colors.pink,
+                    activeColor: const Color.fromARGB(255, 101, 173, 227),
                     onChanged: (int? selectedValue) {
                       setUserSelection(selectedValue!);
                     },
@@ -182,19 +223,29 @@ class _QuizScreenState extends State<QuizScreen> {
             child: ElevatedButton(
               onPressed: previousQuestion,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent,
+                backgroundColor: Colors.transparent,
+                elevation: 0
               ),
-              child: const Text(
-                'Previous Question',
-                style: TextStyle(fontSize: 18.0),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.arrow_back, size: 18.0,color: Colors.black,), // Add the back icon
+                  SizedBox(width: 8.0), // Add some spacing between icon and text
+                  Text(
+                    'Previous',
+                    style: TextStyle(fontSize: 18.0,color: Colors.black),
+                  ),
+                ],
               ),
             ),
           ),
+
           Container(
             margin: const EdgeInsets.only(bottom: 8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
               ),
               onPressed: () {
                 if (quizQuestions.isNotEmpty &&
@@ -204,23 +255,32 @@ class _QuizScreenState extends State<QuizScreen> {
                     if (kDebugMode) {
                       print('$userSelections');
                     }
+                    endQuizAndSendData();
                   } else {
                     nextQuestion();
                   }
                 }
               },
-              child: Text(
-                quizQuestions.isNotEmpty &&
-                    currentQuestionIndex >= 0 &&
-                    currentQuestionIndex < quizQuestions.length
-                    ? (currentQuestionIndex == quizQuestions.length - 1
-                    ? 'End Quiz'
-                    : 'Next Question')
-                    : 'Loading...',
-                style: const TextStyle(fontSize: 18.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    quizQuestions.isNotEmpty &&
+                        currentQuestionIndex >= 0 &&
+                        currentQuestionIndex < quizQuestions.length
+                        ? (currentQuestionIndex == quizQuestions.length - 1
+                        ? 'End Quiz'
+                        : 'Next Question')
+                        : 'Loading...',
+                    style: const TextStyle(fontSize: 18.0,color: Colors.black),
+                  ),
+                  const SizedBox(width: 8.0), // Add some spacing between text and icon
+                  const Icon(Icons.arrow_forward, size: 18.0,color: Colors.black,), // Add the forward arrow icon
+                ],
               ),
             ),
           ),
+
         ],
       ),
     );
