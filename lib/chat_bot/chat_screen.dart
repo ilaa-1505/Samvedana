@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -75,10 +74,27 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hi! This is Sakhi", style: GoogleFonts.poppins(textStyle: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold)),),
+        title: Text(
+          "Hi! This is Sakhi",
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold)),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'home', (route) => false);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
       ),
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(

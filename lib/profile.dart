@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'auth/login.dart';
 
@@ -44,7 +45,8 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Future<void> _updateUserData(String newName, int newPhoneNum, String newEmail) async {
+  Future<void> _updateUserData(
+      String newName, int newPhoneNum, String newEmail) async {
     try {
       final userDocRef = _firestore.collection('users').doc(_user!.uid);
 
@@ -80,94 +82,111 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile Page'),
-        backgroundColor: Colors.pinkAccent,
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
-          },
-          icon: const Icon(Icons.arrow_back_ios_rounded,
-            color: Colors.white,),
-        ),// Match with your app's color scheme
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(left: 10, right: 10),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const CircleAvatar(
-                radius: 65,
-                backgroundColor: Colors.pinkAccent,
-              ),
-              const SizedBox(height: 20),
-              _buildEditableField("Name", _nameController),
-              _buildEditableField("Email", _emailController),
-              _buildEditableField("Phone Number", _phoneNumController),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 45,
-                width: double.infinity,
-                child : ElevatedButton(
-                  onPressed: () async {
-                    if (_isEditing) {
-                      String newName = _nameController.text;
-                      int newPhoneNum = int.tryParse(_phoneNumController.text) ?? 0;
-                      String newEmail = _emailController.text;
-                      await _updateUserData(newName, newPhoneNum, newEmail);
-
-                      setState(() {
-                        _name = newName;
-                        _phoneNum = newPhoneNum;
-                        _email = newEmail;
-                        _isEditing = false; // Exit editing mode after saving
-                      });
-                    } else {
-                      setState(() {
-                        _isEditing = true;
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _isEditing ? Colors.pink.shade500: Colors.pink.shade500, // Change button background color
-                    textStyle: const TextStyle(color: Colors.white), // Change text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(14.0),
-                  ),
-                  child: Text(_isEditing ? "Save" : "Edit"),
+    return Center(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Profile",
+            style: GoogleFonts.poppins(
+              color: Colors.black,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0, // Remove the shadow
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'home', (route) => false);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+        ),
+        body: Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const CircleAvatar(
+                  radius: 90,
+                  backgroundColor: Color.fromARGB(255, 249, 124, 166),
                 ),
-              ),
+                const SizedBox(height: 30),
+                _buildEditableField("Name", _nameController),
+                _buildEditableField("Email", _emailController),
+                _buildEditableField("Phone Number", _phoneNumController),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 45,
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_isEditing) {
+                        String newName = _nameController.text;
+                        int newPhoneNum =
+                            int.tryParse(_phoneNumController.text) ?? 0;
+                        String newEmail = _emailController.text;
+                        await _updateUserData(newName, newPhoneNum, newEmail);
 
-              const SizedBox(height: 20),
-
-              SizedBox(
-                height: 45,
-                width: double.infinity,
-                child : ElevatedButton(
-                  onPressed: () async {
-                    await _auth.signOut();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const Myphone()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.pink.shade500, // Match with your app's color scheme
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                        setState(() {
+                          _name = newName;
+                          _phoneNum = newPhoneNum;
+                          _email = newEmail;
+                          _isEditing = false; // Exit editing mode after saving
+                        });
+                      } else {
+                        setState(() {
+                          _isEditing = true;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _isEditing
+                          ? const Color.fromARGB(255, 0, 0, 0)
+                          : const Color.fromARGB(
+                              255, 0, 0, 0), // Change button background color
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(
+                              255, 255, 255, 255)), // Change text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(14.0),
                     ),
+                    child: Text(_isEditing ? "Save" : "Edit"),
                   ),
-                  child: const Text("Log Out"),
                 ),
-              ),
-
-            ],
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 45,
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const Myphone()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 16, 15,
+                          15), // Match with your app's color scheme
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text("Log Out"),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
