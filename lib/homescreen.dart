@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -22,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<ButtonInfo> buttonsInfo1 = [
       ButtonInfo(
         height: 10,
-        color: Colors.pink.shade100,
+        color: Color.fromARGB(255, 147, 194, 238),
         text: 'Profile',
         onPressed: () {
           _navigateToNamedRoute(context, 'profile');
@@ -30,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       ButtonInfo(
         height: 20,
-        color: Colors.pink.shade200,
+        color: Color.fromARGB(255, 123, 170, 239),
         text: 'Personality Test',
         onPressed: () {
           // Add the onPressed logic for the Personality Test button here
@@ -39,9 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     List<ButtonInfo> buttonsInfo2 = [
-    ButtonInfo(
+      ButtonInfo(
         height: 10,
-        color: Colors.pink.shade300,
+        color: Color.fromARGB(255, 101, 173, 227),
         text: 'Assessment Test',
         onPressed: () {
           _navigateToNamedRoute(context, 'quiz');
@@ -50,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       ButtonInfo(
         height: 10,
-        color: Colors.pink.shade400,
+        color: Color.fromARGB(255, 147, 194, 238),
         text: 'Coping Mechanisms',
         onPressed: () {
           _navigateToNamedRoute(context, 'journal');
@@ -61,15 +63,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade500,
+        backgroundColor: Colors.white,
         toolbarHeight: 100,
-        automaticallyImplyLeading: false,
-        title: const Center(
+        elevation: 0.0,
+        title: Container(
           child: Text(
-            'Samvedana',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+            'Hi user!',
+            style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                color: Colors.black, // Set the text color to black
+                fontSize: 28, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -84,23 +89,21 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 children: buttonsInfo1
                     .map((info) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: buildLargeButton(info),
-                ))
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: buildLargeButton(info),
+                        ))
                     .toList(),
               ),
             ),
-            const SizedBox(
-              height : 60
-            ),// Add some space between scroll views
+            const SizedBox(height: 60), // Add some space between scroll views
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: buttonsInfo2
                     .map((info) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: buildLargeButton(info),
-                ))
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: buildLargeButton(info),
+                        ))
                     .toList(),
               ),
             ),
@@ -119,9 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             heroTag: null,
             elevation: isHovered ? 8.0 : 6.0,
-            backgroundColor: Colors.pinkAccent,
+            backgroundColor: Color.fromARGB(255, 98, 181, 240),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(45.0),
             ),
             child: const Padding(
               padding: EdgeInsets.all(8.0),
@@ -178,4 +181,3 @@ class ButtonInfo {
     required int height,
   });
 }
-

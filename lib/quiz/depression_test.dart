@@ -24,7 +24,8 @@ class _QuizScreenState extends State<QuizScreen> {
     {'text': 'Did not apply to me at all', 'value': 1},
     {'text': 'Applied to me to some degree, or some of the time', 'value': 2},
     {
-      'text': 'Applied to me to a considerable degree, or a good part of the time',
+      'text':
+          'Applied to me to a considerable degree, or a good part of the time',
       'value': 3
     },
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
@@ -40,7 +41,8 @@ class _QuizScreenState extends State<QuizScreen> {
     final data = await fetchQuizData();
     setState(() {
       quizQuestions = data;
-      userSelections = List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
+      userSelections =
+          List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
       isNextButtonEnabled = false; // Initialize as disabled
     });
   }
@@ -50,7 +52,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     try {
       DocumentSnapshot documentSnapshot =
-      await _firestore.collection('quiz').doc('questions').get();
+          await _firestore.collection('quiz').doc('questions').get();
 
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
@@ -77,7 +79,7 @@ class _QuizScreenState extends State<QuizScreen> {
           currentQuestionIndex < quizQuestions.length) {
         userSelections[currentQuestionIndex] = selectedValue;
         isNextButtonEnabled =
-        false; // Enable next button when an option is selected
+            false; // Enable next button when an option is selected
       }
     });
   }
@@ -101,8 +103,6 @@ class _QuizScreenState extends State<QuizScreen> {
       }
     }
   }
-
-
 
   void previousQuestion() {
     if (currentQuestionIndex > 0) {
@@ -211,11 +211,11 @@ class _QuizScreenState extends State<QuizScreen> {
               },
               child: Text(
                 quizQuestions.isNotEmpty &&
-                    currentQuestionIndex >= 0 &&
-                    currentQuestionIndex < quizQuestions.length
+                        currentQuestionIndex >= 0 &&
+                        currentQuestionIndex < quizQuestions.length
                     ? (currentQuestionIndex == quizQuestions.length - 1
-                    ? 'End Quiz'
-                    : 'Next Question')
+                        ? 'End Quiz'
+                        : 'Next Question')
                     : 'Loading...',
                 style: const TextStyle(fontSize: 18.0),
               ),
