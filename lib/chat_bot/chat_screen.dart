@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../homescreen.dart';
 import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -14,7 +15,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = " ";
+  const apiKey = "";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -29,7 +30,7 @@ Future<String> generateResponse(String prompt) async {
         {
           "model": "text-davinci-003",
           "prompt":
-              "I am most probably in depression, please act like a chatbot who helps people with depression, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
+              "Please act like a chatbot who helps people, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
           "temperature": 0.6,
           "max_tokens": 300,
         },
@@ -74,26 +75,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hi! This is Sakhi"),
-        backgroundColor: const Color.fromARGB(255, 244, 103, 202),
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                  title: 'Samvedana',
-                ),
-              ),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_rounded,
-            color: Colors.black,),
-        ),
+        title: Text("Hi! This is Sakhi", style: GoogleFonts.poppins(textStyle: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold)),),
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
       ),
-      backgroundColor: const Color.fromARGB(255, 244, 103, 202),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Column(
           children: [
@@ -115,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: const Padding(
                 padding: EdgeInsets.all(8),
                 child: CircularProgressIndicator(
-                  color: Color.fromARGB(255, 0, 0, 0),
+                  color: Color.fromARGB(255, 238, 166, 208),
                 ),
               ),
             ),
@@ -126,10 +113,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       textCapitalization: TextCapitalization.sentences,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black),
                       controller: _textController,
                       decoration: const InputDecoration(
-                        fillColor: Color(0xFFEAB6DB),
+                        fillColor: Color(0xFFECE2BF),
                         filled: true,
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -142,11 +129,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      color: const Color(0xFFE777AA),
+                      color: const Color(0xFFFFFFFF),
                       child: IconButton(
                         icon: const Icon(
                           Icons.send_rounded,
-                          color: Color.fromRGBO(250, 249, 247, 1.0),
+                          color: Color.fromRGBO(0, 0, 0, 1.0),
                         ),
                         onPressed: () async {
                           setState(() {

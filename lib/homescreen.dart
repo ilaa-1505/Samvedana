@@ -24,10 +24,11 @@ class _MyHomePageState extends State<MyHomePage> {
     List<ButtonInfo> buttonsInfo1 = [
       ButtonInfo(
         height: 10,
-        color: Color.fromARGB(255, 147, 194, 238),
-        text: 'Profile',
+        color: Color.fromARGB(255, 101, 173, 227),
+        text: 'Assessment Test',
         onPressed: () {
-          _navigateToNamedRoute(context, 'profile');
+          _navigateToNamedRoute(context, 'quiz');
+          // Add the onPressed logic for the Assessment Test button here
         },
       ),
       ButtonInfo(
@@ -41,15 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     List<ButtonInfo> buttonsInfo2 = [
-      ButtonInfo(
-        height: 10,
-        color: Color.fromARGB(255, 101, 173, 227),
-        text: 'Assessment Test',
-        onPressed: () {
-          _navigateToNamedRoute(context, 'quiz');
-          // Add the onPressed logic for the Assessment Test button here
-        },
-      ),
       ButtonInfo(
         height: 10,
         color: Color.fromARGB(255, 147, 194, 238),
@@ -66,17 +58,31 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         toolbarHeight: 100,
         elevation: 0.0,
-        title: Container(
-          child: Text(
-            'Hi user!',
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(
-                color: Colors.black, // Set the text color to black
-                fontSize: 28, // Adjust the font size as needed
-                fontWeight: FontWeight.bold,
+        automaticallyImplyLeading: false, // Disable the default back arrow
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Hi user!',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
+            IconButton(
+              icon: Icon(
+                Icons.person_3_sharp, // Replace with your profile icon
+                color: Colors.black,
+              ),
+              onPressed: () {
+                // Add your profile icon onPressed logic here
+                _navigateToNamedRoute(context, 'profile');
+              },
+            ),
+          ],
         ),
       ),
       body: Center(
