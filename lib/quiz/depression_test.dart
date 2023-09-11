@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import '../homescreen.dart';
 
@@ -135,7 +136,7 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 90, 16, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -182,11 +183,19 @@ class _QuizScreenState extends State<QuizScreen> {
             child: ElevatedButton(
               onPressed: previousQuestion,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
               ),
-              child: const Text(
-                'Previous Question',
-                style: TextStyle(fontSize: 18.0),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.arrow_back, size: 18.0,color: Colors.black,), // Add the back icon
+                  SizedBox(width: 8.0), // Add some spacing between icon and text
+                  Text(
+                    'Previous',
+                    style: TextStyle(fontSize: 18.0,color: Colors.black),
+                  ),
+                ],
               ),
             ),
           ),
@@ -194,7 +203,8 @@ class _QuizScreenState extends State<QuizScreen> {
             margin: const EdgeInsets.only(bottom: 8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent,
+                backgroundColor: Colors.transparent,
+                elevation: 0, // Set background color to transparent
               ),
               onPressed: () {
                 if (quizQuestions.isNotEmpty &&
@@ -209,18 +219,32 @@ class _QuizScreenState extends State<QuizScreen> {
                   }
                 }
               },
-              child: Text(
-                quizQuestions.isNotEmpty &&
-                    currentQuestionIndex >= 0 &&
-                    currentQuestionIndex < quizQuestions.length
-                    ? (currentQuestionIndex == quizQuestions.length - 1
-                    ? 'End Quiz'
-                    : 'Next Question')
-                    : 'Loading...',
-                style: const TextStyle(fontSize: 18.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    quizQuestions.isNotEmpty &&
+                        currentQuestionIndex >= 0 &&
+                        currentQuestionIndex < quizQuestions.length
+                        ? (currentQuestionIndex == quizQuestions.length - 1
+                        ? 'End Quiz'
+                        : 'Next')
+                        : 'Loading...',
+                    style: const
+                    TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black
+                    ),
+                  ),
+                  const SizedBox(width: 8.0), // Add some spacing between text and icon
+                  const Icon(Icons.arrow_forward, size: 18.0,color: Colors.black,), // Add the forward arrow icon
+                ],
               ),
             ),
           ),
+
+
+
         ],
       ),
     );
