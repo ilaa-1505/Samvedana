@@ -14,22 +14,22 @@ class ChatMessageWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 1),
       padding: const EdgeInsets.all(16),
-      color: chatMessageType == ChatMessageType.bot ? const Color(0xEAF392AE) : const Color(
-          0xEAF56298),
+      color: chatMessageType == ChatMessageType.bot ? const Color(0xEAFFF9EB) : const Color(
+          0xEAFAFAD9),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           chatMessageType == ChatMessageType.bot ? Container(
             margin: const EdgeInsets.only(right: 16),
                 child : const CircleAvatar(
-                  backgroundColor: Color.fromRGBO(255, 193, 203, 1.0),
+                  backgroundColor: Color.fromRGBO(248, 233, 196, 1.0),
                   // child: Image.asset("assets/image/",
                   // color: Colors.white, scale: 1.5,),
             ),
           ) : Container(
             margin: const EdgeInsets.only(right: 16),
             child: const CircleAvatar(
-              backgroundColor : Color(0xFFF1B2E5),
+              backgroundColor : Color(0xFFEEE3BD),
               child: Icon(
                 CupertinoIcons.person_alt,
               ),
@@ -47,7 +47,7 @@ class ChatMessageWidget extends StatelessWidget {
                 child: Text(text, style: Theme.of(context)
                     .textTheme
                     .bodyLarge
-                    ?.copyWith(color: Colors.white),),
+                    ?.copyWith(color: Colors.black),),
               ),
             ],
           )),
