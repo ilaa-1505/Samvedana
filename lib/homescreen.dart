@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,6 +14,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isHovered = false;
   double buttonSize = 40.0;
+  late User user; // Declare user variable
+  late String name = "User"; // Declare uid variable
+
+  // Initialize user and uid in initState
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser!;
+    name = user.displayName ??
+        "User"; // Use the user's displayName or provide a default value
+  }
 
   void _navigateToNamedRoute(BuildContext context, String routeName) {
     Navigator.of(context).pushReplacementNamed(routeName);
@@ -20,31 +32,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<ButtonInfo> buttonsInfo1 = [
+    List<ButtonInfo> buttonsInfo = [
       ButtonInfo(
-        height: 10,
-        color: Color.fromARGB(255, 101, 173, 227),
+        color: const Color.fromARGB(255, 0, 172, 193),
         text: 'Assessment Test',
+        icon: Icons.assessment, // Add an icon
         onPressed: () {
           _navigateToNamedRoute(context, 'quiz');
-          // Add the onPressed logic for the Assessment Test button here
         },
       ),
       ButtonInfo(
-        height: 20,
-        color: Color.fromARGB(255, 123, 170, 239),
+        color: const Color.fromARGB(255, 255, 87, 34),
         text: 'Personality Test',
-        onPressed: () {
-          // Add the onPressed logic for the Personality Test button here
-        },
+        icon: Icons.person,
+        onPressed: () {},
       ),
-    ];
-
-    List<ButtonInfo> buttonsInfo2 = [
       ButtonInfo(
-        height: 10,
-        color: Color.fromARGB(255, 147, 194, 238),
+        color: const Color.fromARGB(255, 45, 127, 138),
         text: 'Coping Mechanisms',
+        icon: Icons.lightbulb,
         onPressed: () {
           _navigateToNamedRoute(context, 'journal');
         },
@@ -57,14 +63,14 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         toolbarHeight: 100,
         elevation: 0.0,
-        automaticallyImplyLeading: false, // Disable the default back arrow
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Hi user!',
+              'Hi $name!',
               style: GoogleFonts.poppins(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -72,12 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             IconButton(
-              icon: Icon(
-                Icons.person_3_sharp, // Replace with your profile icon
+              icon: const Icon(
+                Icons.person_3_sharp,
                 color: Colors.black,
               ),
               onPressed: () {
-                // Add your profile icon onPressed logic here
                 _navigateToNamedRoute(context, 'profile');
               },
             ),
@@ -89,28 +94,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: buttonsInfo1
-                    .map((info) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: buildLargeButton(info),
-                        ))
-                    .toList(),
-              ),
-            ),
-            const SizedBox(height: 60), // Add some space between scroll views
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: buttonsInfo2
-                    .map((info) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: buildLargeButton(info),
-                        ))
-                    .toList(),
-              ),
+            Column(
+              children: buttonsInfo
+                  .map((info) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: buildLargeButton(info),
+                      ))
+                  .toList(),
             ),
           ],
         ),
@@ -127,16 +117,30 @@ class _MyHomePageState extends State<MyHomePage> {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             heroTag: null,
             elevation: isHovered ? 8.0 : 6.0,
-            backgroundColor: Color.fromARGB(255, 98, 181, 240),
+            backgroundColor: const Color.fromARGB(255, 45, 127, 138),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(45.0),
             ),
             child: const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text(
-                '🙋‍♀️ Sakhi here',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons
+                        .person_outline, // You can replace this with a suitable icon
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Sakhi here',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -152,21 +156,32 @@ class _MyHomePageState extends State<MyHomePage> {
         height: 160,
         decoration: BoxDecoration(
           color: info.color,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: OutlinedButton(
+        child: ElevatedButton(
           onPressed: info.onPressed,
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            backgroundColor: Colors.transparent,
-            side: BorderSide(color: info.color),
-          ),
-          child: Center(
-            child: Text(
-              info.text,
-              style: const TextStyle(fontSize: 18, color: Colors.white),
-              textAlign: TextAlign.center,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: info.color,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                info.icon, // Add the specified icon to the button
+                size: 60, // Adjust icon size as needed
+                color: Colors.white, // Icon color
+              ),
+              const SizedBox(height: 10),
+              Text(
+                info.text,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -177,12 +192,13 @@ class _MyHomePageState extends State<MyHomePage> {
 class ButtonInfo {
   final Color color;
   final String text;
+  final IconData icon; // Add an icon property
   final VoidCallback onPressed;
 
   ButtonInfo({
     required this.color,
     required this.text,
+    required this.icon,
     required this.onPressed,
-    required int height,
   });
 }
