@@ -40,7 +40,9 @@ class _QuizScreenState extends State<QuizScreen> {
       try {
         // Convert the userSelections list to a comma-separated string
         final userSelectionsString = "$userSelections";
-        print(userSelectionsString);
+        if (kDebugMode) {
+          print(userSelectionsString);
+        }
 
         final response = await http.post(
           Uri.parse(apiUrl),

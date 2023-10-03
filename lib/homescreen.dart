@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,12 +37,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _getUserData() async {
     try {
       final userData =
-          await _firestore.collection('users').doc(_user!.uid).get();
+      await _firestore.collection('users').doc(_user!.uid).get();
 
       if (userData.exists) {
-        print("User data exists");
+        if (kDebugMode) {
+          if (kDebugMode) {
+            print("User data exists");
+          }
+        }
         String newName = userData.data()?['name'] ?? "";
-        print("Retrieved name: $newName");
+        if (kDebugMode) {
+          print("Retrieved name: $newName");
+        }
 
         setState(() {
           _name = newName;
@@ -52,10 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
           _phoneNumController.text = _phoneNum.toString();
         });
       } else {
-        print("User data does not exist");
+        if (kDebugMode) {
+          print("User data does not exist");
+        }
       }
     } catch (e) {
-      print("Error retrieving user data: $e");
+      if (kDebugMode) {
+        print("Error retrieving user data: $e");
+      }
     }
   }
 
@@ -65,9 +76,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const LinearGradient gradient = LinearGradient(
+      begin: Alignment.bottomLeft,
+      end: Alignment.topRight,
+      colors: [
+        // Color(0xFF025043),
+        Color(0xED000000),
+        Color(0xFFFFFFFF),
+        // Color(0xFF048C7F),
+        // Color(0xFF05998C),
+        // Color(0xFF4FB9AF),// Replace with your desired start color
+        // Replace with your desired end color
+      ],
+    );
+
+    const SizedBox(
+      height: 145,
+    );
+
     List<ButtonInfo> buttonsInfo = [
       ButtonInfo(
-        color: const Color.fromARGB(255, 0, 172, 193),
+        startColor: const Color(0xFFF241DA), // Replace with your desired start color
+        endColor: const Color(0xFFF74FD9),
         text: 'Assessment Test',
         icon: Icons.assessment,
         onPressed: () {
@@ -75,13 +105,15 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       ButtonInfo(
-        color: const Color.fromARGB(255, 255, 87, 34),
+        startColor: const Color(0xFFF241DA), // Replace with your desired start color
+        endColor: const Color(0xFFF74FD9),
         text: 'Personality Test',
         icon: Icons.person,
         onPressed: () {},
       ),
       ButtonInfo(
-        color: const Color.fromARGB(255, 45, 127, 138),
+        startColor: const Color(0xFFF241DA), // Replace with your desired start color
+        endColor: const Color(0xFFF74FD9),
         text: 'Coping Mechanisms',
         icon: Icons.lightbulb,
         onPressed: () {
@@ -89,7 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     ];
-    print(_name);
+    if (kDebugMode) {
+      print(_name);
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -122,22 +156,54 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            Column(
-              children: buttonsInfo
-                  .map(
-                    (info) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: buildLargeButton(info),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: gradient, // Apply the gradient here
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: buttonsInfo
+                      .sublist(0, 2) // Display the first 2 buttons in the first row
+                      .map(
+                        (info) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: buildLargeButton(
+                        info,
+                        const Color(0xFFF241DA), // Specify the start color
+                        const Color(0xFF3769E3), // Specify the end color
+                      ),
                     ),
                   )
-                  .toList(),
-            ),
-          ],
+                      .toList(),
+                ),
+              ),
+              const SizedBox(height: 50), // Add space between rows
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: buttonsInfo
+                      .sublist(2) // Display the third button in the second row
+                      .map(
+                        (info) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: buildLargeButton(
+                        info,
+                        const Color(0xFFF241DA), // Specify the start color
+                        const Color(0xFF3769E3), // Specify the end color
+                      ),
+                    ),
+                  )
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: MouseRegion(
@@ -163,14 +229,14 @@ class _MyHomePageState extends State<MyHomePage> {
               color: const Color.fromARGB(255, 45, 127, 138),
               borderRadius: BorderRadius.circular(45.0),
             ),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.person_outline,
                   color: Colors.white,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Text(
                   'Sakhi here',
                   style: TextStyle(
@@ -187,23 +253,30 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildLargeButton(ButtonInfo info) {
+  Widget buildLargeButton(ButtonInfo info, Color startColor, Color endColor) {
     return Center(
       child: Container(
         width: 180,
         height: 160,
         decoration: BoxDecoration(
-          color: info.color,
+          gradient: LinearGradient(
+            colors: [startColor, endColor], // Define your gradient colors
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: ElevatedButton(
           onPressed: info.onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: info.color,
+            foregroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
+            minimumSize: const Size(0, 0),
+            visualDensity: VisualDensity.compact,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -231,24 +304,28 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class ButtonInfo {
-  final Color color;
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
+  final Color startColor;
+  final Color endColor;
 
   ButtonInfo({
-    required this.color,
     required this.text,
     required this.icon,
     required this.onPressed,
+    required this.startColor,
+    required this.endColor,
   });
 }
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -256,7 +333,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Your App Title'),
+      home: const MyHomePage(title: 'Your App Title'),
     );
   }
 }

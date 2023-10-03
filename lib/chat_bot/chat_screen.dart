@@ -14,7 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "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";
+  const apiKey = "";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Column(
           children: [

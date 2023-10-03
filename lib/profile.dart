@@ -176,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 16, 15,
+                      backgroundColor: const Color.fromARGB(255, 16, 15,
                           15), // Match with your app's color scheme
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
