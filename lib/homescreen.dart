@@ -13,7 +13,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isHovered = false;
-  double buttonSize = 40.0;
   late User user; // Declare user variable
   late String name = "User"; // Declare uid variable
 
@@ -60,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         toolbarHeight: 100,
         elevation: 0.0,
         automaticallyImplyLeading: false,
@@ -96,52 +95,57 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20),
             Column(
               children: buttonsInfo
-                  .map((info) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: buildLargeButton(info),
-                      ))
+                  .map(
+                    (info) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: buildLargeButton(info),
+                    ),
+                  )
                   .toList(),
             ),
           ],
         ),
       ),
-      floatingActionButton: Transform.scale(
-        scale: buttonSize / 40.0,
-        child: SizedBox(
-          width: 180,
-          child: FloatingActionButton(
-            onPressed: () {
-              _navigateToNamedRoute(context, 'sakhi');
-            },
-            tooltip: 'Say Hi',
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            heroTag: null,
-            elevation: isHovered ? 8.0 : 6.0,
-            backgroundColor: const Color.fromARGB(255, 45, 127, 138),
-            shape: RoundedRectangleBorder(
+      floatingActionButton: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            isHovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            isHovered = false;
+          });
+        },
+        child: GestureDetector(
+          onTap: () {
+            _navigateToNamedRoute(context, 'sakhi');
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: isHovered ? 200 : 180,
+            height: isHovered ? 60 : 40,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 45, 127, 138),
               borderRadius: BorderRadius.circular(45.0),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons
-                        .person_outline, // You can replace this with a suitable icon
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.person_outline,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Sakhi here',
+                  style: TextStyle(
+                    fontSize: 16,
                     color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Sakhi here',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -178,7 +182,10 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 10),
               Text(
                 info.text,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -201,4 +208,22 @@ class ButtonInfo {
     required this.icon,
     required this.onPressed,
   });
+}
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Your App Title',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Your App Title'),
+      // ... (Other configurations/routes)
+    );
+  }
 }
