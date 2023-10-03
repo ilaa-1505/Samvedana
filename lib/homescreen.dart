@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,16 +14,49 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isHovered = false;
-  late User user; // Declare user variable
-  late String name = "User"; // Declare uid variable
+  String _name = "";
+  String _email = "";
+  int _phoneNum = 0;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? _user;
 
-  // Initialize user and uid in initState
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser!;
-    name = user.displayName ??
-        "User"; // Use the user's displayName or provide a default value
+    _user = _auth.currentUser;
+    if (_user != null) {
+      _getUserData();
+    }
+  }
+
+  Future<void> _getUserData() async {
+    try {
+      final userData =
+          await _firestore.collection('users').doc(_user!.uid).get();
+
+      if (userData.exists) {
+        print("User data exists");
+        String newName = userData.data()?['name'] ?? "";
+        print("Retrieved name: $newName");
+
+        setState(() {
+          _name = newName;
+          _email = userData.data()?['email'] ?? "";
+          _phoneNum = userData.data()?['phone_num'] ?? 0;
+          _nameController.text = _name;
+          _emailController.text = _email;
+          _phoneNumController.text = _phoneNum.toString();
+        });
+      } else {
+        print("User data does not exist");
+      }
+    } catch (e) {
+      print("Error retrieving user data: $e");
+    }
   }
 
   void _navigateToNamedRoute(BuildContext context, String routeName) {
@@ -35,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ButtonInfo(
         color: const Color.fromARGB(255, 0, 172, 193),
         text: 'Assessment Test',
-        icon: Icons.assessment, // Add an icon
+        icon: Icons.assessment,
         onPressed: () {
           _navigateToNamedRoute(context, 'quiz');
         },
@@ -55,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     ];
-
+    print(_name);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -67,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Hi $name!',
+              'Hi $_name!',
               style: GoogleFonts.poppins(
                 textStyle: const TextStyle(
                   color: Colors.black,
@@ -175,9 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                info.icon, // Add the specified icon to the button
-                size: 60, // Adjust icon size as needed
-                color: Colors.white, // Icon color
+                info.icon,
+                size: 60,
+                color: Colors.white,
               ),
               const SizedBox(height: 10),
               Text(
@@ -199,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class ButtonInfo {
   final Color color;
   final String text;
-  final IconData icon; // Add an icon property
+  final IconData icon;
   final VoidCallback onPressed;
 
   ButtonInfo({
@@ -223,7 +257,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Your App Title'),
-      // ... (Other configurations/routes)
     );
   }
 }
