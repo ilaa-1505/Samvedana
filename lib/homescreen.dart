@@ -16,19 +16,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isHovered = false;
   String _name = "";
-  String _email = "";
-  int _phoneNum = 0;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneNumController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? _user;
 
   @override
   void initState() {
     super.initState();
-    _user = _auth.currentUser;
+    _user = FirebaseAuth.instance.currentUser;
     if (_user != null) {
       _getUserData();
     }
@@ -36,37 +29,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _getUserData() async {
     try {
-      final userData =
-      await _firestore.collection('users').doc(_user!.uid).get();
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_user!.uid)
+          .get();
 
       if (userData.exists) {
-        if (kDebugMode) {
-          if (kDebugMode) {
-            print("User data exists");
-          }
-        }
-        String newName = userData.data()?['name'] ?? "";
-        if (kDebugMode) {
-          print("Retrieved name: $newName");
-        }
-
         setState(() {
-          _name = newName;
-          _email = userData.data()?['email'] ?? "";
-          _phoneNum = userData.data()?['phone_num'] ?? 0;
-          _nameController.text = _name;
-          _emailController.text = _email;
-          _phoneNumController.text = _phoneNum.toString();
+          _name = userData.data()?['name'] ?? "";
         });
-      } else {
-        if (kDebugMode) {
-          print("User data does not exist");
-        }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("Error retrieving user data: $e");
-      }
+      print("Error retrieving user data: $e");
     }
   }
 
@@ -76,28 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const LinearGradient gradient = LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-      colors: [
-        // Color(0xFF025043),
-        Color(0xED000000),
-        Color(0xFFFFFFFF),
-        // Color(0xFF048C7F),
-        // Color(0xFF05998C),
-        // Color(0xFF4FB9AF),// Replace with your desired start color
-        // Replace with your desired end color
-      ],
-    );
-
-    const SizedBox(
-      height: 145,
-    );
-
     List<ButtonInfo> buttonsInfo = [
       ButtonInfo(
-        startColor: const Color(0xFFF241DA), // Replace with your desired start color
-        endColor: const Color(0xFFF74FD9),
+        color: Color.fromARGB(255, 246, 160, 40),
         text: 'Assessment Test',
         icon: Icons.assessment,
         onPressed: () {
@@ -105,15 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       ButtonInfo(
-        startColor: const Color(0xFFF241DA), // Replace with your desired start color
-        endColor: const Color(0xFFF74FD9),
+        color: Color.fromARGB(255, 246, 160, 40),
         text: 'Personality Test',
         icon: Icons.person,
         onPressed: () {},
       ),
       ButtonInfo(
-        startColor: const Color(0xFFF241DA), // Replace with your desired start color
-        endColor: const Color(0xFFF74FD9),
+        color: Color.fromARGB(255, 246, 160, 40),
         text: 'Coping Mechanisms',
         icon: Icons.lightbulb,
         onPressed: () {
@@ -121,16 +74,13 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     ];
-    if (kDebugMode) {
-      print(_name);
-    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        toolbarHeight: 100,
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
+        centerTitle: true,
+        toolbarHeight: 110,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -139,68 +89,54 @@ class _MyHomePageState extends State<MyHomePage> {
               style: GoogleFonts.poppins(
                 textStyle: const TextStyle(
                   color: Colors.black,
-                  fontSize: 28,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.person_3_sharp,
-                color: Colors.black,
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color.fromARGB(
+                    255, 248, 203, 134), // Set the background color to orange
               ),
-              onPressed: () {
-                _navigateToNamedRoute(context, 'profile');
-              },
-            ),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.person_rounded,
+                  color: Colors.black,
+                  size: 35,
+                ),
+                onPressed: () {
+                  _navigateToNamedRoute(context, 'profile');
+                },
+                splashRadius: 20,
+              ),
+            )
           ],
         ),
       ),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: gradient, // Apply the gradient here
+          image: DecorationImage(
+            image:
+                AssetImage("assets/bgr2.jpeg"), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 30),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: buttonsInfo
-                      .sublist(0, 2) // Display the first 2 buttons in the first row
-                      .map(
-                        (info) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: buildLargeButton(
-                        info,
-                        const Color(0xFFF241DA), // Specify the start color
-                        const Color(0xFF3769E3), // Specify the end color
+              const SizedBox(height: 10),
+              Column(
+                children: buttonsInfo
+                    .map(
+                      (info) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: buildLargeButton(info),
                       ),
-                    ),
-                  )
-                      .toList(),
-                ),
-              ),
-              const SizedBox(height: 50), // Add space between rows
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: buttonsInfo
-                      .sublist(2) // Display the third button in the second row
-                      .map(
-                        (info) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: buildLargeButton(
-                        info,
-                        const Color(0xFFF241DA), // Specify the start color
-                        const Color(0xFF3769E3), // Specify the end color
-                      ),
-                    ),
-                  )
-                      .toList(),
-                ),
+                    )
+                    .toList(),
               ),
             ],
           ),
@@ -223,25 +159,25 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            width: isHovered ? 200 : 180,
-            height: isHovered ? 60 : 40,
+            width: isHovered ? 200 : 160,
+            height: isHovered ? 200 : 50,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 45, 127, 138),
-              borderRadius: BorderRadius.circular(45.0),
+              color: Color.fromARGB(255, 246, 160, 40),
+              borderRadius: BorderRadius.circular(40.0),
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.person_outline,
-                  color: Colors.white,
+                  Icons.person,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
                 SizedBox(width: 8),
                 Text(
                   'Sakhi here',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 0, 0, 0),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -253,50 +189,42 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildLargeButton(ButtonInfo info, Color startColor, Color endColor) {
-    return Center(
-      child: Container(
-        width: 180,
-        height: 160,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [startColor, endColor], // Define your gradient colors
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+  Widget buildLargeButton(ButtonInfo info) {
+    return Container(
+      width: 250,
+      height: 150,
+      decoration: BoxDecoration(
+          color: info.color, borderRadius: BorderRadius.circular(20)),
+      child: ElevatedButton(
+        onPressed: info.onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          borderRadius: BorderRadius.circular(10),
+          minimumSize: const Size(0, 0),
+          visualDensity: VisualDensity.compact,
         ),
-        child: ElevatedButton(
-          onPressed: info.onPressed,
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              info.icon,
+              size: 40,
+              color: Colors.white,
             ),
-            minimumSize: const Size(0, 0),
-            visualDensity: VisualDensity.compact,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                info.icon,
-                size: 60,
+            const SizedBox(height: 5),
+            Text(
+              info.text,
+              style: const TextStyle(
+                fontSize: 14,
                 color: Colors.white,
               ),
-              const SizedBox(height: 10),
-              Text(
-                info.text,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
@@ -307,15 +235,13 @@ class ButtonInfo {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
-  final Color startColor;
-  final Color endColor;
+  final Color color;
 
   ButtonInfo({
     required this.text,
     required this.icon,
     required this.onPressed,
-    required this.startColor,
-    required this.endColor,
+    required this.color,
   });
 }
 

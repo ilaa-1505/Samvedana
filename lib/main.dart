@@ -9,7 +9,7 @@ import 'profile.dart';
 import 'coping/journal.dart';
 import 'quiz/depression_test.dart';
 import 'package:samveadana/auth/user_provider.dart';
-import 'chat_bot/chat_screen.dart';// Import the UserProvider class
+import 'chat_bot/chat_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()), // Provide UserProvider
+        ChangeNotifierProvider(
+            create: (_) => UserProvider()), // Provide UserProvider
       ],
       child: MyApp(),
     ),
@@ -44,9 +45,9 @@ class MyApp extends StatelessWidget {
         'otp': (context) => const Myotp(),
         'home': (context) => const MyHomePage(title: ''),
         'profile': (context) => const ProfilePage(),
-        'journal' : (context) => const JournalPage(),
-        'quiz' : (context) => const QuizScreen(),
-        'sakhi' : (context) => const ChatScreen(),
+        'journal': (context) => const JournalPage(),
+        'quiz': (context) => const QuizScreen(),
+        'sakhi': (context) => const ChatScreen(),
       },
     );
   }
