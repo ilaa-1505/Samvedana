@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     List<ButtonInfo> buttonsInfo = [
       ButtonInfo(
-        color: Color.fromARGB(255, 246, 160, 40),
+        color: const Color.fromARGB(255, 246, 166, 54),
         text: 'Assessment Test',
         icon: Icons.assessment,
         onPressed: () {
@@ -60,13 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       ButtonInfo(
-        color: Color.fromARGB(255, 246, 160, 40),
+        color: const Color.fromARGB(255, 246, 166, 54),
         text: 'Personality Test',
         icon: Icons.person,
         onPressed: () {},
       ),
       ButtonInfo(
-        color: Color.fromARGB(255, 246, 160, 40),
+        color: const Color.fromARGB(255, 246, 166, 54),
         text: 'Coping Mechanisms',
         icon: Icons.lightbulb,
         onPressed: () {
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        toolbarHeight: 110,
+        toolbarHeight: 120,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -89,16 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
               style: GoogleFonts.poppins(
                 textStyle: const TextStyle(
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: 36,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color.fromARGB(
-                    255, 248, 203, 134), // Set the background color to orange
+                color: Color.fromARGB(255, 248, 203, 134),
               ),
               child: IconButton(
                 icon: const Icon(
@@ -109,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   _navigateToNamedRoute(context, 'profile');
                 },
-                splashRadius: 20,
+                splashRadius: 10,
               ),
             )
           ],
@@ -127,12 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 10),
+              const SizedBox(height: 30),
               Column(
                 children: buttonsInfo
                     .map(
                       (info) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 13),
                         child: buildLargeButton(info),
                       ),
                     )
@@ -162,7 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
             width: isHovered ? 200 : 160,
             height: isHovered ? 200 : 50,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 246, 160, 40),
+              // ignore: prefer_const_constructors
+              color: Color.fromARGB(255, 248, 159, 34),
               borderRadius: BorderRadius.circular(40.0),
             ),
             child: const Row(
@@ -192,9 +192,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildLargeButton(ButtonInfo info) {
     return Container(
       width: 250,
-      height: 150,
+      height: 170,
       decoration: BoxDecoration(
-          color: info.color, borderRadius: BorderRadius.circular(20)),
+        color: info.color,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: ElevatedButton(
         onPressed: info.onPressed,
         style: ElevatedButton.styleFrom(
@@ -202,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(0),
           ),
           minimumSize: const Size(0, 0),
           visualDensity: VisualDensity.compact,
@@ -212,15 +214,16 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Icon(
               info.icon,
-              size: 40,
-              color: Colors.white,
+              size: 100,
+              color: const Color.fromARGB(255, 255, 255, 255),
             ),
             const SizedBox(height: 5),
             Text(
               info.text,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.white,
+              style: GoogleFonts.titilliumWeb(
+                fontSize: 20,
+                color: const Color.fromARGB(255, 3, 3, 3),
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
