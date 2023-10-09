@@ -15,23 +15,26 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: AppStyle.mainColor,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
           title: Text(
             "Your Journals",
-            style: GoogleFonts.poppins(color: Colors.white, fontSize: 25),
+            style: GoogleFonts.poppins(
+                color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
-          backgroundColor: AppStyle.mainColor,
+          backgroundColor: Colors.transparent, // Make the AppBar transparent
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -43,63 +46,76 @@ class _JournalPageState extends State<JournalPage> {
             },
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Your recent notes",
-                style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22.0),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/bgr3.jpeg',
+              fit: BoxFit.fill,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Your recent notes",
+                    style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22.0),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                    child: ListView(
+                      shrinkWrap: true,
+                    ),
+                  ),
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("Notes")
+                            .snapshots(),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return GridView(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              children: snapshot.data!.docs
+                                  .map((note) => noteCard(() {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NoteReaderScreen(note),
+                                            ));
+                                      }, note))
+                                  .toList(),
+                            );
+                          }
+                          return Text(
+                            "There are no notes",
+                            style: GoogleFonts.poppins(color: Colors.black),
+                          );
+                        }),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 20.0,
-                child: ListView(
-                  shrinkWrap: true,
-                ),
-              ),
-              Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("Notes")
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return GridView(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          children: snapshot.data!.docs
-                              .map((note) => noteCard(() {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NoteReaderScreen(note),
-                                        ));
-                                  }, note))
-                              .toList(),
-                        );
-                      }
-                      return Text(
-                        "There are no notes",
-                        style: GoogleFonts.poppins(color: Colors.white),
-                      );
-                    }),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -108,8 +124,13 @@ class _JournalPageState extends State<JournalPage> {
               MaterialPageRoute(builder: (context) => const NoteEditorScreen()),
             );
           },
-          label: const Text("Add note"),
+          label: Text("Add note",
+              style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w500)),
           icon: const Icon(Icons.add),
+          backgroundColor: Colors.black,
         ),
       ),
     );
