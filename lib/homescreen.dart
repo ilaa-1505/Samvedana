@@ -81,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         toolbarHeight: 120,
+        elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -95,10 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromARGB(255, 248, 203, 134),
-              ),
+              // decoration: const BoxDecoration(
+              //   shape: BoxShape.circle,
+              //   color: Color.fromARGB(255, 248, 203, 134),
+              // ),
               child: IconButton(
                 icon: const Icon(
                   Icons.person_rounded,

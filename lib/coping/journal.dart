@@ -23,6 +23,7 @@ class _JournalPageState extends State<JournalPage> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
+          toolbarHeight: 70,
           title: Text(
             "Your Journals",
             style: GoogleFonts.poppins(
@@ -47,35 +48,40 @@ class _JournalPageState extends State<JournalPage> {
           ),
         ),
         body: Stack(
-          fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/bgr3.jpeg',
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: double.infinity,
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      "assets/bgr3.jpeg"), // Replace with your image path
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Your recent notes",
-                    style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.0),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                    child: ListView(
-                      shrinkWrap: true,
-                    ),
-                  ),
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
+            Positioned.fill(
+              top: kToolbarHeight +
+                  65.0, // Ensure that content starts below the toolbar
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Your recent notes",
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                        child: ListView(
+                          shrinkWrap: true,
+                        ),
+                      ),
+                      StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection("Notes")
                             .snapshots(),
@@ -110,9 +116,11 @@ class _JournalPageState extends State<JournalPage> {
                             "There are no notes",
                             style: GoogleFonts.poppins(color: Colors.black),
                           );
-                        }),
-                  )
-                ],
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
