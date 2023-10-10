@@ -1,14 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import '../homescreen.dart';
-
-const String apiUrl =
-    'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -23,58 +17,18 @@ class _QuizScreenState extends State<QuizScreen> {
   List<String> quizQuestions = [];
   List<int> userSelections = [];
   int currentQuestionIndex = 0;
-  bool isNextButtonEnabled = false; // Track button state
+  bool isNextButtonEnabled = false;
 
-  // Define fixed options for all questions
   final List<Map<String, dynamic>> fixedOptions = [
     {'text': 'Did not apply to me at all', 'value': 1},
     {'text': 'Applied to me to some degree, or some of the time', 'value': 2},
     {
       'text':
-          'Applied to me to a considerable degree, or a good part of the time',
+      'Applied to me to a considerable degree, or a good part of the time',
       'value': 3
     },
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
   ];
-
-  void endQuizAndSendData() async {
-    if (userSelections.every((selection) => selection != -1)) {
-      try {
-        // Convert the userSelections list to a comma-separated string
-        final userSelectionsString = "$userSelections";
-        if (kDebugMode) {
-          print(userSelectionsString);
-        }
-
-        final response = await http.post(Uri.parse(apiUrl),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({'files': userSelectionsString}));
-
-        // Use userSelectionsString
-
-        if (response.statusCode == 200) {
-          // Successfully sent data to the API
-          if (kDebugMode) {
-            print('Data sent to API: ${response.body}');
-          }
-        } else {
-          // Handle error when API request fails
-          if (kDebugMode) {
-            print('API request failed with status code ${response.statusCode}');
-          }
-        }
-      } catch (e) {
-        // Handle exceptions during the HTTP request
-        if (kDebugMode) {
-          print('Error sending data to API: $e');
-        }
-      }
-    } else {
-      // Display an error message or handle the case where not all questions have been answered
-    }
-  }
 
   @override
   void initState() {
@@ -86,9 +40,8 @@ class _QuizScreenState extends State<QuizScreen> {
     final data = await fetchQuizData();
     setState(() {
       quizQuestions = data;
-      userSelections =
-          List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
-      isNextButtonEnabled = false; // Initialize as disabled
+      userSelections = List<int>.filled(quizQuestions.length, -1);
+      isNextButtonEnabled = false;
     });
   }
 
@@ -97,12 +50,12 @@ class _QuizScreenState extends State<QuizScreen> {
 
     try {
       DocumentSnapshot documentSnapshot =
-          await _firestore.collection('quiz').doc('questions').get();
+      await _firestore.collection('quiz').doc('questions').get();
 
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
       if (data != null) {
-        for (int i = 1; i <= 60; i++) {
+        for (int i = 1; i <= 42; i++) {
           final question = data[i.toString()] as String?;
           quizData.add(question!);
         }
@@ -121,8 +74,7 @@ class _QuizScreenState extends State<QuizScreen> {
       if (quizQuestions.isNotEmpty &&
           currentQuestionIndex < quizQuestions.length) {
         userSelections[currentQuestionIndex] = selectedValue;
-        isNextButtonEnabled =
-            false; // Enable next button when an option is selected
+        isNextButtonEnabled = false;
       }
     });
   }
@@ -136,13 +88,8 @@ class _QuizScreenState extends State<QuizScreen> {
         });
       }
     } else if (currentQuestionIndex == quizQuestions.length - 1) {
-      // Check if all questions have been answered before proceeding
       if (userSelections.every((selection) => selection != -1)) {
-        if (kDebugMode) {
-          print('$userSelections');
-        }
-      } else {
-        // Display an error message or handle the case where not all questions have been answered
+        // Handle completion of the quiz, e.g., navigate to the next screen
       }
     }
   }
@@ -152,7 +99,6 @@ class _QuizScreenState extends State<QuizScreen> {
       setState(() {
         currentQuestionIndex--;
         isNextButtonEnabled = true;
-        // Don't change the state of the next button when going back
       });
     }
   }
@@ -196,8 +142,8 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
+            padding: const EdgeInsets.only(
+                top: 60, right: 16, bottom: 16, left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -224,7 +170,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         title: Text(option['text']),
                         value: option['value'],
                         groupValue: userSelections[currentQuestionIndex],
-                        activeColor: Color.fromARGB(255, 250, 195, 84),
+                        activeColor: const Color.fromARGB(255, 250, 195, 84),
                         onChanged: (int? selectedValue) {
                           setUserSelection(selectedValue!);
                         },
@@ -232,7 +178,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     }).toList(),
                   )
                 else
-                  const Text('Options loading...'), // Handle loading of options
+                  const Text('Options loading...'),
               ],
             ),
           ),
@@ -243,76 +189,84 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8.0),
-                  child: ElevatedButton(
-                    onPressed: previousQuestion,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent, elevation: 0),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.arrow_back,
-                          size: 18.0,
-                          color: Colors.black,
-                        ),
-                        SizedBox(
-                            width:
-                                8.0), // Add some spacing between icon and text
-                        Text(
-                          'Previous',
-                          style: TextStyle(fontSize: 18.0, color: Colors.black),
-                        ),
-                      ],
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8.0),
+                    child: ElevatedButton(
+                      onPressed: previousQuestion,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, elevation: 0),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.arrow_back,
+                            size: 18.0,
+                            color: Colors.black,
+                          ),
+                          SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            'Previous',
+                            style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                    onPressed: () {
-                      if (quizQuestions.isNotEmpty &&
-                          currentQuestionIndex >= 0 &&
-                          currentQuestionIndex < quizQuestions.length) {
-                        if (currentQuestionIndex == quizQuestions.length - 1) {
-                          if (kDebugMode) {
-                            print('$userSelections');
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        if (quizQuestions.isNotEmpty &&
+                            currentQuestionIndex >= 0 &&
+                            currentQuestionIndex < quizQuestions.length) {
+                          if (currentQuestionIndex == quizQuestions.length - 1) {
+                            if (kDebugMode) {
+                              print('$userSelections');
+                            }
+                            Navigator.pushNamed(
+                              context,
+                              'personality', // Use the correct route name defined in MaterialApp
+                              arguments: {'answersFromQuizScreen': userSelections},
+                            );
+                          } else {
+                            nextQuestion();
                           }
-                          endQuizAndSendData();
-                        } else {
-                          nextQuestion();
                         }
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          quizQuestions.isNotEmpty &&
-                                  currentQuestionIndex >= 0 &&
-                                  currentQuestionIndex < quizQuestions.length
-                              ? (currentQuestionIndex ==
-                                      quizQuestions.length - 1
-                                  ? 'End Quiz'
-                                  : 'Next Question')
-                              : 'Loading...',
-                          style: const TextStyle(
-                              fontSize: 18.0, color: Colors.black),
-                        ),
-                        const SizedBox(
-                            width:
-                                8.0), // Add some spacing between text and icon
-                        const Icon(
-                          Icons.arrow_forward,
-                          size: 18.0,
-                          color: Colors.black,
-                        ),
-                      ],
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            quizQuestions.isNotEmpty &&
+                                currentQuestionIndex >= 0 &&
+                                currentQuestionIndex < quizQuestions.length
+                                ? (currentQuestionIndex ==
+                                quizQuestions.length - 1
+                                ? 'Personality Quiz'
+                                : 'Next Question')
+                                : 'Loading...',
+                            style: const TextStyle(
+                                fontSize: 18.0, color: Colors.black),
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 18.0,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

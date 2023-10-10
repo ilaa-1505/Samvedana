@@ -10,6 +10,7 @@ import 'coping/journal.dart';
 import 'quiz/depression_test.dart';
 import 'package:samveadana/auth/user_provider.dart';
 import 'chat_bot/chat_screen.dart';
+import 'quiz/personality_test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,11 @@ class MyApp extends StatelessWidget {
         'journal': (context) => const JournalPage(),
         'quiz': (context) => const QuizScreen(),
         'sakhi': (context) => const ChatScreen(),
+        'personality': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          final List<int> answersFromQuizScreen = args['answersFromQuizScreen'];
+          return PQuizScreen(answersFromQuizScreen: answersFromQuizScreen);
+        },
       },
     );
   }

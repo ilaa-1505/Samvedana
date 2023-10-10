@@ -62,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
         color: const Color.fromARGB(255, 246, 166, 54),
         text: 'Personality Test',
         icon: Icons.person,
-        onPressed: () {},
+        onPressed: () {
+          _navigateToNamedRoute(context, 'personality');
+        },
       ),
       ButtonInfo(
         color: const Color.fromARGB(255, 246, 166, 54),
