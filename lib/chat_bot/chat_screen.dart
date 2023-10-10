@@ -123,29 +123,37 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding:
+                  const EdgeInsets.only(top: 20, bottom: 15, left: 8, right: 8),
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      style: const TextStyle(color: Colors.black),
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        fillColor: Color(0xFFECE2BF),
-                        filled: true,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 234, 219, 165),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TextField(
+                          textCapitalization: TextCapitalization.sentences,
+                          style: const TextStyle(color: Colors.black),
+                          controller: _textController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Type a message...',
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      color: const Color(0xFFFFFFFF),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFFFFF),
+                        shape: BoxShape.circle,
+                      ),
                       child: IconButton(
                         icon: const Icon(
                           Icons.send_rounded,
