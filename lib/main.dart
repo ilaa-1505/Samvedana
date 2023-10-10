@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:samveadana/auth/login.dart';
 import 'package:samveadana/auth/otp.dart';
+import 'package:samveadana/quiz/result.dart';
 import 'homescreen.dart';
 import 'profile.dart';
 import 'coping/journal.dart';

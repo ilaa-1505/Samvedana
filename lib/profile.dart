@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
       await userDocRef.update(userData);
 
       setState(
-        () {
+            () {
           _name = newName;
           _phoneNum = newPhoneNum;
           _email = newEmail;

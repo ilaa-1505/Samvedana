@@ -40,7 +40,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final data = await fetchQuizData();
     setState(() {
       quizQuestions = data;
-      userSelections = List<int>.filled(quizQuestions.length, -1);
+      userSelections = List<int>.filled(quizQuestions.length, 1);
       isNextButtonEnabled = false;
     });
   }
