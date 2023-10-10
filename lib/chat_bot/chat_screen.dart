@@ -27,11 +27,11 @@ Future<String> generateResponse(String prompt) async {
       },
       body: json.encode(
         {
-          "model": "gpt-3.5-turbo-16k-0613",
+          "model": "text-davinci-003",
           "prompt":
               "Please act like a chatbot who helps people, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
-          "temperature": 0.2,
-          "max_tokens": 1000,
+          "temperature": 0.1,
+          "max_tokens": 700,
         },
       ),
     );
