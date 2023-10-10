@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../homescreen.dart';
 
@@ -160,10 +161,20 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 101, 173, 227),
-        title: const Text('Assessment Quiz'),
+        backgroundColor: const Color.fromRGBO(246, 184, 96, 0.8),
+        title: Text(
+          'Assessment Quiz',
+          style: GoogleFonts.poppins(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: const Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -176,117 +187,136 @@ class _QuizScreenState extends State<QuizScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding:
-            const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 8.0),
-            if (quizQuestions.isNotEmpty &&
-                currentQuestionIndex >= 0 &&
-                currentQuestionIndex < quizQuestions.length)
-              Text(
-                quizQuestions[currentQuestionIndex],
-                style: const TextStyle(fontSize: 24.0),
-              )
-            else
-              const Text(
-                'Loading...',
-                style: TextStyle(fontSize: 24.0),
-              ),
-            const SizedBox(height: 16.0),
-            if (quizQuestions.isNotEmpty &&
-                currentQuestionIndex >= 0 &&
-                currentQuestionIndex < quizQuestions.length)
-              Column(
-                children: fixedOptions.map<Widget>((option) {
-                  return RadioListTile<int>(
-                    title: Text(option['text']),
-                    value: option['value'],
-                    groupValue: userSelections[currentQuestionIndex],
-                    activeColor: const Color.fromARGB(255, 101, 173, 227),
-                    onChanged: (int? selectedValue) {
-                      setUserSelection(selectedValue!);
-                    },
-                  );
-                }).toList(),
-              )
-            else
-              const Text('Options loading...'), // Handle loading of options
-          ],
-        ),
-      ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Stack(
         children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 8.0),
-            child: ElevatedButton(
-              onPressed: previousQuestion,
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent, elevation: 0),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.arrow_back,
-                    size: 18.0,
-                    color: Colors.black,
-                  ), // Add the back icon
-                  SizedBox(
-                      width: 8.0), // Add some spacing between icon and text
-                  Text(
-                    'Previous',
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  ),
-                ],
-              ),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/bgr1.jpeg', // Replace with your image path
+              fit: BoxFit.cover,
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 8.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-              ),
-              onPressed: () {
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 8.0),
                 if (quizQuestions.isNotEmpty &&
                     currentQuestionIndex >= 0 &&
-                    currentQuestionIndex < quizQuestions.length) {
-                  if (currentQuestionIndex == quizQuestions.length - 1) {
-                    if (kDebugMode) {
-                      print('$userSelections');
-                    }
-                    endQuizAndSendData();
-                  } else {
-                    nextQuestion();
-                  }
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                    currentQuestionIndex < quizQuestions.length)
                   Text(
-                    quizQuestions.isNotEmpty &&
-                            currentQuestionIndex >= 0 &&
-                            currentQuestionIndex < quizQuestions.length
-                        ? (currentQuestionIndex == quizQuestions.length - 1
-                            ? 'End Quiz'
-                            : 'Next Question')
-                        : 'Loading...',
-                    style: const TextStyle(fontSize: 18.0, color: Colors.black),
+                    quizQuestions[currentQuestionIndex],
+                    style: const TextStyle(fontSize: 24.0),
+                  )
+                else
+                  const Text(
+                    'Loading...',
+                    style: TextStyle(fontSize: 24.0),
                   ),
-                  const SizedBox(
-                      width: 8.0), // Add some spacing between text and icon
-                  const Icon(
-                    Icons.arrow_forward,
-                    size: 18.0,
-                    color: Colors.black,
-                  ), // Add the forward arrow icon
-                ],
-              ),
+                const SizedBox(height: 16.0),
+                if (quizQuestions.isNotEmpty &&
+                    currentQuestionIndex >= 0 &&
+                    currentQuestionIndex < quizQuestions.length)
+                  Column(
+                    children: fixedOptions.map<Widget>((option) {
+                      return RadioListTile<int>(
+                        title: Text(option['text']),
+                        value: option['value'],
+                        groupValue: userSelections[currentQuestionIndex],
+                        activeColor: Color.fromARGB(255, 250, 195, 84),
+                        onChanged: (int? selectedValue) {
+                          setUserSelection(selectedValue!);
+                        },
+                      );
+                    }).toList(),
+                  )
+                else
+                  const Text('Options loading...'), // Handle loading of options
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8.0),
+                  child: ElevatedButton(
+                    onPressed: previousQuestion,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent, elevation: 0),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_back,
+                          size: 18.0,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                            width:
+                                8.0), // Add some spacing between icon and text
+                        Text(
+                          'Previous',
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      if (quizQuestions.isNotEmpty &&
+                          currentQuestionIndex >= 0 &&
+                          currentQuestionIndex < quizQuestions.length) {
+                        if (currentQuestionIndex == quizQuestions.length - 1) {
+                          if (kDebugMode) {
+                            print('$userSelections');
+                          }
+                          endQuizAndSendData();
+                        } else {
+                          nextQuestion();
+                        }
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          quizQuestions.isNotEmpty &&
+                                  currentQuestionIndex >= 0 &&
+                                  currentQuestionIndex < quizQuestions.length
+                              ? (currentQuestionIndex ==
+                                      quizQuestions.length - 1
+                                  ? 'End Quiz'
+                                  : 'Next Question')
+                              : 'Loading...',
+                          style: const TextStyle(
+                              fontSize: 18.0, color: Colors.black),
+                        ),
+                        const SizedBox(
+                            width:
+                                8.0), // Add some spacing between text and icon
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 18.0,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
