@@ -33,10 +33,12 @@ class ChatMessageWidget extends StatelessWidget {
                 )
               : Container(
                   margin: const EdgeInsets.only(right: 10),
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xFFEEE3BD),
-                    child: Icon(
-                      CupertinoIcons.person_alt,
+                  child: CircleAvatar(
+                    radius: 20.0,
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    child: Image.asset(
+                      "assets/user.png", // Replace with the correct image asset path
+                      // Adjust the height to fit within the CircleAvatar
                     ),
                   ),
                 ),
