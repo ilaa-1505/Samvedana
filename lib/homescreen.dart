@@ -92,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'Hi $_name!',
               style: GoogleFonts.poppins(
+                // Apply Poppins font style
                 textStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 36,
@@ -100,10 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-              // decoration: const BoxDecoration(
-              //   shape: BoxShape.circle,
-              //   color: Color.fromARGB(255, 248, 203, 134),
-              // ),
               child: IconButton(
                 icon: const Icon(
                   Icons.person_rounded,
@@ -165,11 +162,10 @@ class _MyHomePageState extends State<MyHomePage> {
             width: isHovered ? 200 : 160,
             height: isHovered ? 200 : 50,
             decoration: BoxDecoration(
-              // ignore: prefer_const_constructors
               color: Color.fromARGB(255, 248, 159, 34),
               borderRadius: BorderRadius.circular(40.0),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
@@ -179,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 8),
                 Text(
                   'Sakhi here',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
+                    // Apply Poppins font style
                     fontSize: 16,
                     color: Color.fromARGB(255, 0, 0, 0),
                     fontWeight: FontWeight.bold,
@@ -224,8 +221,9 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 5),
             Text(
               info.text,
-              style: GoogleFonts.titilliumWeb(
-                fontSize: 20,
+              style: GoogleFonts.poppins(
+                // Apply Poppins font style
+                fontSize: 18,
                 color: const Color.fromARGB(255, 3, 3, 3),
                 fontWeight: FontWeight.bold,
               ),

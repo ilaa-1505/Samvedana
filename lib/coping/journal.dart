@@ -20,122 +20,87 @@ class _JournalPageState extends State<JournalPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        extendBodyBehindAppBar: true,
         appBar: AppBar(
-            elevation: 0.0,
-            toolbarHeight: 70,
-            title: Text(
-              "Your Journals",
-              style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600),
+          elevation: 0.0,
+          title: Text(
+            "Your Journals",
+            style: GoogleFonts.poppins(color: Colors.black, fontSize: 25),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
             ),
-            centerTitle: true,
-            backgroundColor: Colors.transparent, // Make the AppBar transparent
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.black,
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePage(
+                      title: 'Samvedana',
+                    ),
+                  ));
+            },
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Your recent notes",
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0),
               ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyHomePage(
-                        title: 'Samvedana',
-                      ),
-                    ));
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.more_vert, // Three dots icon
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  // Implement your menu actions here
-                },
-              )
-            ]),
-        body: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      "assets/bgr3.jpeg"), // Replace with your image path
-                  fit: BoxFit.cover,
+              SizedBox(
+                height: 20.0,
+                child: ListView(
+                  shrinkWrap: true,
                 ),
               ),
-            ),
-            Positioned.fill(
-              top: kToolbarHeight +
-                  65.0, // Ensure that content starts below the toolbar
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Your recent notes",
-                        style: GoogleFonts.poppins(
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("Notes")
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.0),
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                        child: ListView(
-                          shrinkWrap: true,
-                        ),
-                      ),
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("Notes")
-                            .snapshots(),
-                        builder:
-                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            return GridView(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
-                              children: snapshot.data!.docs
-                                  .map((note) => noteCard(() {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NoteReaderScreen(note),
-                                            ));
-                                      }, note))
-                                  .toList(),
-                            );
-                          }
-                          return Text(
-                            "There are no notes",
-                            style: GoogleFonts.poppins(color: Colors.black),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        return GridView(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          children: snapshot.data!.docs
+                              .map((note) => noteCard(() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              NoteReaderScreen(note),
+                                        ));
+                                  }, note))
+                              .toList(),
+                        );
+                      }
+                      return Text(
+                        "There are no notes",
+                        style: GoogleFonts.poppins(color: Colors.black),
+                      );
+                    }),
+              )
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -144,13 +109,8 @@ class _JournalPageState extends State<JournalPage> {
               MaterialPageRoute(builder: (context) => const NoteEditorScreen()),
             );
           },
-          label: Text("Add note",
-              style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w500)),
+          label: const Text("Add note"),
           icon: const Icon(Icons.add),
-          backgroundColor: Colors.black,
         ),
       ),
     );
