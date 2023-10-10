@@ -47,9 +47,9 @@ class _JournalPageState extends State<JournalPage> {
         ),
         body: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+            // ),
             // Background Image
             Image.asset(
               'assets/bgr3.jpeg', // Replace with your image path
@@ -57,9 +57,11 @@ class _JournalPageState extends State<JournalPage> {
               width: double.infinity,
               height: double.infinity,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: kToolbarHeight + 50.0, left: 16.0),
+            Positioned.fill(
+              top: kToolbarHeight + 50, left: 16, right: 16,
+              //Padding(
+              // padding: const EdgeInsets.only(
+              //     top: kToolbarHeight + 30.0, left: 16.0, right: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
