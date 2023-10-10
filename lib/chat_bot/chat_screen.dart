@@ -7,14 +7,14 @@ import 'chat_message_type.dart';
 import 'chat_message_widget.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  const ChatScreen({Key? key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "";
+  const apiKey = "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";
 
   var url = Uri.https("api.openai.com", "/v1/completions");
 
@@ -27,11 +27,11 @@ Future<String> generateResponse(String prompt) async {
       },
       body: json.encode(
         {
-          "model": "text-davinci-003",
+          "model": "gpt-3.5-turbo-16k-0613",
           "prompt":
               "Please act like a chatbot who helps people, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
-          "temperature": 0.6,
-          "max_tokens": 300,
+          "temperature": 0.2,
+          "max_tokens": 1000,
         },
       ),
     );
@@ -130,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 234, 219, 165),
+                        color: const Color.fromARGB(255, 234, 219, 165),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Padding(
@@ -150,8 +150,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFFFFF),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFFFFFF),
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(

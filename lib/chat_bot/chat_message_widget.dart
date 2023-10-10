@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'chat_message_type.dart';
 
@@ -19,16 +18,13 @@ class ChatMessageWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           chatMessageType == ChatMessageType.bot
-              ? Container(
-                  child: CircleAvatar(
-                    radius:
-                        25.0, // Set the radius according to your requirement
-                    backgroundColor: const Color.fromARGB(234, 255, 240, 228),
-                    child: Image.asset(
-                      "assets/doctor1.png",
-                      scale:
-                          2.0, // Adjust the scale factor to make the image bigger
-                    ),
+              ? CircleAvatar(
+                  radius: 25.0, // Set the radius according to your requirement
+                  backgroundColor: const Color.fromARGB(234, 255, 240, 228),
+                  child: Image.asset(
+                    "assets/doctor1.png",
+                    scale:
+                        2.0, // Adjust the scale factor to make the image bigger
                   ),
                 )
               : Container(

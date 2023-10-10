@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,16 +57,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
       await userDocRef.update(userData);
 
-      setState(() {
-        _name = newName;
-        _phoneNum = newPhoneNum;
-        _email = newEmail;
-        _isEditing = false; // Exit editing mode after saving
-      });
+      setState(
+        () {
+          _name = newName;
+          _phoneNum = newPhoneNum;
+          _email = newEmail;
+          _isEditing = false; // Exit editing mode after saving
+        },
+      );
     } catch (e) {
-      if (kDebugMode) {
-        print('Error updating user data: $e');
-      }
+      print("ERROR");
     }
   }
 
@@ -107,83 +106,72 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         body: Container(
-          margin: const EdgeInsets.only(left: 10, right: 10),
-          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(horizontal: 40),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                const SizedBox(height: 30),
                 const CircleAvatar(
                   radius: 90,
-                  backgroundColor: Color.fromARGB(255, 249, 124, 166),
+                  backgroundColor: Color.fromARGB(255, 247, 206, 135),
+                  child: Icon(
+                    Icons.person,
+                    size: 100,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 _buildEditableField("Name", _nameController),
                 _buildEditableField("Email", _emailController),
                 _buildEditableField("Phone Number", _phoneNumController),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 45,
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_isEditing) {
-                        String newName = _nameController.text;
-                        int newPhoneNum =
-                            int.tryParse(_phoneNumController.text) ?? 0;
-                        String newEmail = _emailController.text;
-                        await _updateUserData(newName, newPhoneNum, newEmail);
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_isEditing) {
+                      String newName = _nameController.text;
+                      int newPhoneNum =
+                          int.tryParse(_phoneNumController.text) ?? 0;
+                      String newEmail = _emailController.text;
+                      await _updateUserData(newName, newPhoneNum, newEmail);
 
-                        setState(() {
-                          _name = newName;
-                          _phoneNum = newPhoneNum;
-                          _email = newEmail;
-                          _isEditing = false; // Exit editing mode after saving
-                        });
-                      } else {
-                        setState(() {
-                          _isEditing = true;
-                        });
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isEditing
-                          ? const Color.fromARGB(255, 0, 0, 0)
-                          : const Color.fromARGB(
-                              255, 0, 0, 0), // Change button background color
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(
-                              255, 255, 255, 255)), // Change text color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.all(14.0),
+                      setState(() {
+                        _isEditing = false; // Exit editing mode after saving
+                      });
+                    } else {
+                      setState(() {
+                        _isEditing = true;
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isEditing
+                        ? const Color.fromARGB(255, 249, 187, 55)
+                        : const Color.fromARGB(255, 249, 187, 55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text(_isEditing ? "Save" : "Edit"),
+                    padding: const EdgeInsets.all(10),
                   ),
+                  child: Text(_isEditing ? "Save" : "Edit"),
                 ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 45,
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await _auth.signOut();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const Myphone()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 16, 15,
-                          15), // Match with your app's color scheme
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () async {
+                    await _auth.signOut();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const Myphone(),
                       ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 249, 187, 55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text("Log Out"),
                   ),
+                  child: const Text("Log Out"),
                 ),
               ],
             ),
@@ -195,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildEditableField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(15.0),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
