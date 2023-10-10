@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../homescreen.dart';
 
 const String apiUrl =
-'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
+    'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -29,7 +29,8 @@ class _QuizScreenState extends State<QuizScreen> {
     {'text': 'Did not apply to me at all', 'value': 1},
     {'text': 'Applied to me to some degree, or some of the time', 'value': 2},
     {
-      'text': 'Applied to me to a considerable degree, or a good part of the time',
+      'text':
+          'Applied to me to a considerable degree, or a good part of the time',
       'value': 3
     },
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
@@ -44,14 +45,13 @@ class _QuizScreenState extends State<QuizScreen> {
           print(userSelectionsString);
         }
 
-        final response = await http.post(
-          Uri.parse(apiUrl),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({'files': userSelectionsString}));
+        final response = await http.post(Uri.parse(apiUrl),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({'files': userSelectionsString}));
 
-          // Use userSelectionsString
+        // Use userSelectionsString
 
         if (response.statusCode == 200) {
           // Successfully sent data to the API
@@ -85,7 +85,8 @@ class _QuizScreenState extends State<QuizScreen> {
     final data = await fetchQuizData();
     setState(() {
       quizQuestions = data;
-      userSelections = List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
+      userSelections =
+          List<int>.filled(quizQuestions.length, -1); // Initialize all to -1
       isNextButtonEnabled = false; // Initialize as disabled
     });
   }
@@ -95,14 +96,14 @@ class _QuizScreenState extends State<QuizScreen> {
 
     try {
       DocumentSnapshot documentSnapshot =
-      await _firestore.collection('quiz').doc('questions').get();
+          await _firestore.collection('quiz').doc('questions').get();
 
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
       if (data != null) {
         for (int i = 1; i <= 60; i++) {
           final question = data[i.toString()] as String?;
-            quizData.add(question!);
+          quizData.add(question!);
         }
       }
     } catch (e) {
@@ -120,7 +121,7 @@ class _QuizScreenState extends State<QuizScreen> {
           currentQuestionIndex < quizQuestions.length) {
         userSelections[currentQuestionIndex] = selectedValue;
         isNextButtonEnabled =
-        false; // Enable next button when an option is selected
+            false; // Enable next button when an option is selected
       }
     });
   }
@@ -144,8 +145,6 @@ class _QuizScreenState extends State<QuizScreen> {
       }
     }
   }
-
-
 
   void previousQuestion() {
     if (currentQuestionIndex > 0) {
@@ -178,7 +177,8 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top:60,right:16,bottom:16,left:16),
+        padding:
+            const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -225,23 +225,25 @@ class _QuizScreenState extends State<QuizScreen> {
             child: ElevatedButton(
               onPressed: previousQuestion,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                elevation: 0
-              ),
+                  backgroundColor: Colors.transparent, elevation: 0),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.arrow_back, size: 18.0,color: Colors.black,), // Add the back icon
-                  SizedBox(width: 8.0), // Add some spacing between icon and text
+                  Icon(
+                    Icons.arrow_back,
+                    size: 18.0,
+                    color: Colors.black,
+                  ), // Add the back icon
+                  SizedBox(
+                      width: 8.0), // Add some spacing between icon and text
                   Text(
                     'Previous',
-                    style: TextStyle(fontSize: 18.0,color: Colors.black),
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                 ],
               ),
             ),
           ),
-
           Container(
             margin: const EdgeInsets.only(bottom: 8.0),
             child: ElevatedButton(
@@ -268,21 +270,25 @@ class _QuizScreenState extends State<QuizScreen> {
                 children: [
                   Text(
                     quizQuestions.isNotEmpty &&
-                        currentQuestionIndex >= 0 &&
-                        currentQuestionIndex < quizQuestions.length
+                            currentQuestionIndex >= 0 &&
+                            currentQuestionIndex < quizQuestions.length
                         ? (currentQuestionIndex == quizQuestions.length - 1
-                        ? 'End Quiz'
-                        : 'Next Question')
+                            ? 'End Quiz'
+                            : 'Next Question')
                         : 'Loading...',
-                    style: const TextStyle(fontSize: 18.0,color: Colors.black),
+                    style: const TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
-                  const SizedBox(width: 8.0), // Add some spacing between text and icon
-                  const Icon(Icons.arrow_forward, size: 18.0,color: Colors.black,), // Add the forward arrow icon
+                  const SizedBox(
+                      width: 8.0), // Add some spacing between text and icon
+                  const Icon(
+                    Icons.arrow_forward,
+                    size: 18.0,
+                    color: Colors.black,
+                  ), // Add the forward arrow icon
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );

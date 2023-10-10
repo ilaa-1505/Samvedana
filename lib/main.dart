@@ -18,8 +18,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => UserProvider()), // Provide UserProvider
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MyApp(),
     ),
@@ -30,12 +29,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-
-    // Check if the user is logged in based on UserProvider's isLoggedIn property
     String initialRoute = userProvider.isLoggedIn ? 'home' : 'login';
     if (kDebugMode) {
       print('Initial route: $initialRoute');
-    } // Add this line for debugging
+    }
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
