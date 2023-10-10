@@ -179,7 +179,7 @@ class _MyotpState extends State<Myotp> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade300,
+                    backgroundColor: Colors.pink,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
