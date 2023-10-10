@@ -8,13 +8,13 @@ class AppStyle {
 
   static List<Color> cardsColor = [
     Colors.white,
-    Colors.red.shade200,
-    Colors.pink.shade200,
-    Colors.orange.shade200,
-    Colors.yellow.shade200,
-    Colors.green.shade200,
-    Colors.blue.shade200,
-    Colors.blueGrey.shade200
+    Colors.red.shade100,
+    Colors.pink.shade100,
+    Colors.orange.shade100,
+    Colors.yellow.shade100,
+    Colors.green.shade100,
+    Colors.blue.shade100,
+    Colors.blueGrey.shade100
   ];
 
   static TextStyle mainTitle =

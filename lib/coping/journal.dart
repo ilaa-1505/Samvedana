@@ -47,6 +47,9 @@ class _JournalPageState extends State<JournalPage> {
         ),
         body: Stack(
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+            ),
             // Background Image
             Image.asset(
               'assets/bgr3.jpeg', // Replace with your image path
@@ -55,14 +58,12 @@ class _JournalPageState extends State<JournalPage> {
               height: double.infinity,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: kToolbarHeight + 16.0),
+              padding:
+                  const EdgeInsets.only(top: kToolbarHeight + 50.0, left: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-                  ),
                   Text(
                     "Your recent notes",
                     style: GoogleFonts.poppins(
