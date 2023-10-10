@@ -22,31 +22,43 @@ class _JournalPageState extends State<JournalPage> {
       home: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          elevation: 0.0,
-          toolbarHeight: 70,
-          title: Text(
-            "Your Journals",
-            style: GoogleFonts.poppins(
-                color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent, // Make the AppBar transparent
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
+            elevation: 0.0,
+            toolbarHeight: 70,
+            title: Text(
+              "Your Journals",
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600),
             ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MyHomePage(
-                      title: 'Samvedana',
-                    ),
-                  ));
-            },
-          ),
-        ),
+            centerTitle: true,
+            backgroundColor: Colors.transparent, // Make the AppBar transparent
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyHomePage(
+                        title: 'Samvedana',
+                      ),
+                    ));
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.more_vert, // Three dots icon
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  // Implement your menu actions here
+                },
+              )
+            ]),
         body: Stack(
           children: [
             Container(
