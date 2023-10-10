@@ -22,60 +22,78 @@ class _JournalPageState extends State<JournalPage> {
       home: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          elevation: 0.0,
-          title: Text(
-            "Your Journals",
-            style: GoogleFonts.poppins(
-                color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent, // Make the AppBar transparent
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
+            elevation: 0.0,
+            toolbarHeight: 70,
+            title: Text(
+              "Your Journals",
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600),
             ),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MyHomePage(
-                      title: 'Samvedana',
-                    ),
-                  ));
-            },
-          ),
-        ),
+            centerTitle: true,
+            backgroundColor: Colors.transparent, // Make the AppBar transparent
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyHomePage(
+                        title: 'Samvedana',
+                      ),
+                    ));
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.more_vert, // Three dots icon
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  // Implement your menu actions here
+                },
+              )
+            ]),
         body: Stack(
-          fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/bgr3.jpeg',
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: double.infinity,
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      "assets/bgr3.jpeg"), // Replace with your image path
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Your recent notes",
-                    style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.0),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                    child: ListView(
-                      shrinkWrap: true,
-                    ),
-                  ),
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
+            Positioned.fill(
+              top: kToolbarHeight +
+                  65.0, // Ensure that content starts below the toolbar
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Your recent notes",
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                        child: ListView(
+                          shrinkWrap: true,
+                        ),
+                      ),
+                      StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection("Notes")
                             .snapshots(),
@@ -110,9 +128,11 @@ class _JournalPageState extends State<JournalPage> {
                             "There are no notes",
                             style: GoogleFonts.poppins(color: Colors.black),
                           );
-                        }),
-                  )
-                ],
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
