@@ -10,7 +10,7 @@ const String apiUrl = ''; // Your API URL goes here
 class PQuizScreen extends StatefulWidget {
 
 
-  PQuizScreen({Key? key, required this.answersFromQuizScreen}) : super(key: key);
+  const PQuizScreen({Key? key, required this.answersFromQuizScreen}) : super(key: key);
 
   final List<int> answersFromQuizScreen;
 

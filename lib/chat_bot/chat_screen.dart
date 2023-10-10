@@ -16,6 +16,7 @@ class ChatScreen extends StatefulWidget {
 Future<String> generateResponse(String prompt) async {
   const apiKey = "";
 
+
   var url = Uri.https("api.openai.com", "/v1/completions");
 
   try {
@@ -30,8 +31,8 @@ Future<String> generateResponse(String prompt) async {
           "model": "text-davinci-003",
           "prompt":
               "Please act like a chatbot who helps people, dont mention you are an AI, you are Sakhi. Please answer this question and nothing else: $prompt",
-          "temperature": 0.6,
-          "max_tokens": 300,
+          "temperature": 0.1,
+          "max_tokens": 700,
         },
       ),
     );
@@ -130,7 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 234, 219, 165),
+                        color: const Color.fromARGB(255, 234, 219, 165),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Padding(
@@ -150,8 +151,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   Visibility(
                     visible: !isLoading,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFFFFF),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFFFFFF),
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
