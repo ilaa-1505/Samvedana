@@ -5,10 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-const String apiUrl = 'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
+const String apiUrl =
+    'https://asia-south1-melanoma-388416.cloudfunctions.net/predict';
 
 class PQuizScreen extends StatefulWidget {
-  const PQuizScreen({Key? key, required this.answersFromQuizScreen}) : super(key: key);
+  const PQuizScreen({Key? key, required this.answersFromQuizScreen})
+      : super(key: key);
 
   final List<int> answersFromQuizScreen;
 
@@ -57,7 +59,8 @@ class _PQuizScreenState extends State<PQuizScreen> {
     List<String> quizData = [];
 
     try {
-      DocumentSnapshot documentSnapshot = await _firestore.collection('personality').doc('question2').get();
+      DocumentSnapshot documentSnapshot =
+          await _firestore.collection('personality').doc('question2').get();
 
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
@@ -124,7 +127,10 @@ class _PQuizScreenState extends State<PQuizScreen> {
     if (kDebugMode) {
       print("userSelections1: $userSelections1");
     }
-    final combinedAnswers = [...widget.answersFromQuizScreen, ...userSelections1];
+    final combinedAnswers = [
+      ...widget.answersFromQuizScreen,
+      ...userSelections1
+    ];
 
     if (kDebugMode) {
       print("CombinedAnswers:");
@@ -197,8 +203,8 @@ class _PQuizScreenState extends State<PQuizScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                top: 60, right: 16, bottom: 16, left: 16),
+            padding:
+                const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -208,7 +214,8 @@ class _PQuizScreenState extends State<PQuizScreen> {
                     currentQuestionIndex < pQuizQuestions.length)
                   Text(
                     pQuizQuestions[currentQuestionIndex],
-                    style: const TextStyle(fontSize: 24.0),
+                    style: GoogleFonts.poppins(
+                        fontSize: 24, fontWeight: FontWeight.w400),
                   )
                 else
                   const Text(
@@ -222,7 +229,11 @@ class _PQuizScreenState extends State<PQuizScreen> {
                   Column(
                     children: fixedOptions.map<Widget>((option) {
                       return RadioListTile<int>(
-                        title: Text(option['text']),
+                        title: Text(
+                          option['text'],
+                          style: GoogleFonts.poppins(
+                              fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
                         value: option['value'],
                         groupValue: userSelections1[currentQuestionIndex],
                         activeColor: const Color.fromARGB(255, 250, 195, 84),
@@ -261,13 +272,16 @@ class _PQuizScreenState extends State<PQuizScreen> {
                 children: [
                   Text(
                     pQuizQuestions.isNotEmpty &&
-                        currentQuestionIndex >= 0 &&
-                        currentQuestionIndex < pQuizQuestions.length
+                            currentQuestionIndex >= 0 &&
+                            currentQuestionIndex < pQuizQuestions.length
                         ? (currentQuestionIndex == pQuizQuestions.length - 1
-                        ? 'End Quiz'
-                        : 'Next Question')
+                            ? 'End Quiz'
+                            : 'Next Question')
                         : 'Loading...',
-                    style: const TextStyle(fontSize: 18.0, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
                   ),
                   const SizedBox(width: 8.0),
                   const Icon(
@@ -312,16 +326,33 @@ class ResultScreen extends StatelessWidget {
     final extractedResult = extractResult(result);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Result'),
+        backgroundColor:
+            Colors.transparent, //const Color.fromRGBO(246, 184, 96, 0.8),
+        elevation: 0,
+        title: Text(
+          'Result',
+          style: GoogleFonts.poppins(
+              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+          onPressed: () {
+            // Handle back button press as needed
+          },
+        ),
       ),
+      backgroundColor: Color.fromARGB(255, 244, 217, 229),
       body: Center(
         child: Text(
           extractedResult,
-          style: const TextStyle(fontSize: 24),
+          style: GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         ),
       ),
     );
   }
 }
-

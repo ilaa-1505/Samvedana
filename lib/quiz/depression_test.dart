@@ -24,7 +24,7 @@ class _QuizScreenState extends State<QuizScreen> {
     {'text': 'Applied to me to some degree, or some of the time', 'value': 2},
     {
       'text':
-      'Applied to me to a considerable degree, or a good part of the time',
+          'Applied to me to a considerable degree, or a good part of the time',
       'value': 3
     },
     {'text': 'Applied to me very much, or most of the time', 'value': 4},
@@ -50,7 +50,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     try {
       DocumentSnapshot documentSnapshot =
-      await _firestore.collection('quiz').doc('questions').get();
+          await _firestore.collection('quiz').doc('questions').get();
 
       final data = documentSnapshot.data() as Map<String, dynamic>?;
 
@@ -142,8 +142,8 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                top: 60, right: 16, bottom: 16, left: 16),
+            padding:
+                const EdgeInsets.only(top: 60, right: 16, bottom: 16, left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -153,12 +153,14 @@ class _QuizScreenState extends State<QuizScreen> {
                     currentQuestionIndex < quizQuestions.length)
                   Text(
                     quizQuestions[currentQuestionIndex],
-                    style: const TextStyle(fontSize: 24.0),
+                    style: GoogleFonts.poppins(
+                        fontSize: 24, fontWeight: FontWeight.w400),
                   )
                 else
-                  const Text(
+                  Text(
                     'Loading...',
-                    style: TextStyle(fontSize: 24.0),
+                    style: GoogleFonts.poppins(
+                        fontSize: 24, fontWeight: FontWeight.w400),
                   ),
                 const SizedBox(height: 16.0),
                 if (quizQuestions.isNotEmpty &&
@@ -167,7 +169,11 @@ class _QuizScreenState extends State<QuizScreen> {
                   Column(
                     children: fixedOptions.map<Widget>((option) {
                       return RadioListTile<int>(
-                        title: Text(option['text']),
+                        title: Text(
+                          option['text'],
+                          style: GoogleFonts.poppins(
+                              fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
                         value: option['value'],
                         groupValue: userSelections[currentQuestionIndex],
                         activeColor: const Color.fromARGB(255, 250, 195, 84),
@@ -209,7 +215,8 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                           Text(
                             'Previous',
-                            style: TextStyle(fontSize: 18.0, color: Colors.black),
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.black),
                           ),
                         ],
                       ),
@@ -228,14 +235,17 @@ class _QuizScreenState extends State<QuizScreen> {
                         if (quizQuestions.isNotEmpty &&
                             currentQuestionIndex >= 0 &&
                             currentQuestionIndex < quizQuestions.length) {
-                          if (currentQuestionIndex == quizQuestions.length - 1) {
+                          if (currentQuestionIndex ==
+                              quizQuestions.length - 1) {
                             if (kDebugMode) {
                               print('$userSelections');
                             }
                             Navigator.pushNamed(
                               context,
                               'personality', // Use the correct route name defined in MaterialApp
-                              arguments: {'answersFromQuizScreen': userSelections},
+                              arguments: {
+                                'answersFromQuizScreen': userSelections
+                              },
                             );
                           } else {
                             nextQuestion();
@@ -247,12 +257,12 @@ class _QuizScreenState extends State<QuizScreen> {
                         children: [
                           Text(
                             quizQuestions.isNotEmpty &&
-                                currentQuestionIndex >= 0 &&
-                                currentQuestionIndex < quizQuestions.length
+                                    currentQuestionIndex >= 0 &&
+                                    currentQuestionIndex < quizQuestions.length
                                 ? (currentQuestionIndex ==
-                                quizQuestions.length - 1
-                                ? 'Personality Quiz'
-                                : 'Next Question')
+                                        quizQuestions.length - 1
+                                    ? 'Personality Quiz'
+                                    : 'Next Question')
                                 : 'Loading...',
                             style: const TextStyle(
                                 fontSize: 18.0, color: Colors.black),

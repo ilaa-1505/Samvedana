@@ -47,9 +47,6 @@ class _JournalPageState extends State<JournalPage> {
         ),
         body: Stack(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-            // ),
             // Background Image
             Image.asset(
               'assets/bgr3.jpeg', // Replace with your image path
