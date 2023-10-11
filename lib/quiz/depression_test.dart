@@ -264,8 +264,10 @@ class _QuizScreenState extends State<QuizScreen> {
                                     ? 'Personality Quiz'
                                     : 'Next Question')
                                 : 'Loading...',
-                            style: const TextStyle(
-                                fontSize: 18.0, color: Colors.black),
+                            style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(
                             width: 8.0,
